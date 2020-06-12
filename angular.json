@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "treeholes-angular-firebase": {
+    "treehole-angular-firebase": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/treeholes-angular-firebase",
+            "outputPath": "dist/treehole-angular-firebase",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -21,9 +21,15 @@
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
+              "src/theme.less",
               "src/styles.css"
             ],
             "scripts": []
@@ -62,18 +68,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "treeholes-angular-firebase:build"
+            "browserTarget": "treehole-angular-firebase:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "treeholes-angular-firebase:build:production"
+              "browserTarget": "treehole-angular-firebase:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "treeholes-angular-firebase:build"
+            "browserTarget": "treehole-angular-firebase:build"
           }
         },
         "test": {
@@ -110,15 +116,19 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "treeholes-angular-firebase:serve"
+            "devServerTarget": "treehole-angular-firebase:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "treeholes-angular-firebase:serve:production"
+              "devServerTarget": "treehole-angular-firebase:serve:production"
             }
           }
         }
       }
-    }},
-  "defaultProject": "treeholes-angular-firebase"
+    }
+  },
+  "defaultProject": "treehole-angular-firebase",
+  "cli": {
+    "analytics": "f897717d-fa9e-45d9-91b0-ac78df5b471d"
+  }
 }

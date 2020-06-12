@@ -1,0 +1,61 @@
+<form nz-form [formGroup]="addForm" (ngSubmit)="savePost()">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="title">
+      {{ "ADD.TITLE" | translate }}
+    </nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="inputErrorsTemplate">
+      <input
+        type="text"
+        nz-input
+        minlength="10"
+        maxlength="200"
+        formControlName="title"
+        id="title"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="message" nzRequired>
+      {{ "ADD.MESSAGE" | translate }}
+    </nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="inputErrorsTemplate">
+      <textarea
+        rows="5"
+        nz-input
+        id="message"
+        formControlName="message"
+        minlength="100"
+        maxlength="2000"
+      ></textarea>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item class="justify-center">
+    <button nz-button nzSize="large" class="mr4" (click)="onCancel()">
+      <i nz-icon nzType="left"></i>
+      {{ "ADD.CANCEL" | translate }}
+    </button>
+
+    <button
+      nz-button
+      nzSize="large"
+      nzType="primary"
+      type="submit"
+      [nzLoading]="isLoading"
+    >
+      <i nz-icon nzType="save"></i>
+      {{ "ADD.SUBMIT" | translate }}
+    </button>
+  </nz-form-item>
+</form>
+
+<ng-template #inputErrorsTemplate let-control>
+  <ng-container *ngIf="control.hasError('maxlength')">
+    {{ "ERROR.MAXLENGTH" | translate }}
+  </ng-container>
+  <ng-container *ngIf="control.hasError('minlength')">
+    {{ "ERROR.MINLENGTH" | translate }}
+  </ng-container>
+  <ng-container *ngIf="control.hasError('required')">
+    {{ "ERROR.REQUIRED" | translate }}
+  </ng-container>
+</ng-template>

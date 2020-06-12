@@ -1,0 +1,24 @@
+{
+  "TITLE": "Treehole",
+  "SUBTITLE": "Annoymouse Disucssion Forum",
+  "LANGUAGE": "Language",
+  "ADD_YOUR_POST": "Add Your Post",
+  "ADD": {
+    "TITLE": "Title",
+    "MESSAGE": "Message",
+    "SUBMIT": "Submit",
+    "CANCEL": "Cancel"
+  },
+  "ERROR": {
+    "REQUIRED": "Input is required",
+    "MINLENGTH": "Please enter a longer text",
+    "MAXLENGTH": "The input is too long"
+  },
+  "SORT_BY": {
+    "OLDEST_POSTS": "Oldest Posts",
+    "NEWEST_POSTS": "Newest Posts",
+    "MOST_LIKES": "Most Likes",
+    "MOST_DISLIKES": "Most Dislikes",
+    "MOST_COMMENTS": "Most Comments"
+  }
+}

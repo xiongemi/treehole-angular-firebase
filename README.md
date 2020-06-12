@@ -1,6 +1,22 @@
-# TreeholesAngularFirebase
+# Treehole Angular Firebase
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.7.
+
+## Add Your Own Firebase Config
+
+Create a file named `firebase.config.ts` under `src` folder.
+Add your own firebase config in this file, like
+
+```
+export const firebaseConfig = {
+  apiKey: '<your-key>',
+  authDomain: '<your-project-authdomain>',
+  databaseURL: '<your-database-URL>',
+  projectId: '<your-project-id>',
+  storageBucket: '<your-storage-bucket>',
+  messagingSenderId: '<your-messaging-sender-id>'
+};
+```
 
 ## Development server
 

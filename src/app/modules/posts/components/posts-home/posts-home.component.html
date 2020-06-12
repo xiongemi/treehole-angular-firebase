@@ -1,0 +1,52 @@
+<form [formGroup]="searchForm">
+  <nz-select formControlName="sortBy" class="w4">
+    <nz-option
+      [nzValue]="SortBy.NewestPosts"
+      [nzLabel]="SortBy.NewestPosts | translate"
+    ></nz-option>
+    <nz-option
+      [nzValue]="SortBy.OldestPosts"
+      [nzLabel]="SortBy.OldestPosts | translate"
+    ></nz-option>
+    <nz-option
+      [nzValue]="SortBy.MostLikes"
+      [nzLabel]="SortBy.MostLikes | translate"
+    ></nz-option>
+    <nz-option
+      [nzValue]="SortBy.MostDislikes"
+      [nzLabel]="SortBy.MostDislikes | translate"
+    ></nz-option>
+    <nz-option
+      [nzValue]="SortBy.MostComments"
+      [nzLabel]="SortBy.MostComments | translate"
+    ></nz-option>
+  </nz-select>
+</form>
+
+<nz-list nzItemLayout="vertical" [nzBordered]="true" class="bg-white">
+  <nz-list-item *ngFor="let post of posts" [nzNoFlex]="true">
+    <nz-list-item-meta>
+      <nz-list-item-meta-title>
+        {{ post.title }}
+      </nz-list-item-meta-title>
+      <nz-list-item-meta-description>
+        {{ post.createdAt | date: "medium" }}
+      </nz-list-item-meta-description>
+    </nz-list-item-meta>
+    {{ post.message }}
+    <ul nz-list-item-actions>
+      <nz-list-item-action>
+        <i nz-icon nzType="star-o"></i>
+        {{ post.likesCount }}
+      </nz-list-item-action>
+      <nz-list-item-action>
+        <i nz-icon nzType="star-o"></i>
+        {{ post.dislikesCount }}
+      </nz-list-item-action>
+      <nz-list-item-action>
+        <i nz-icon nzType="star-o"></i>
+        {{ post.commentsCount }}
+      </nz-list-item-action>
+    </ul>
+  </nz-list-item>
+</nz-list>

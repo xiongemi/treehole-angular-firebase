@@ -1,11 +1,27 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { AppRoutes } from './models/app-routes.enum';
 
-
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: AppRoutes.Posts,
+    loadChildren: () =>
+      import('./modules/posts/posts.module').then(m => m.PostsModule)
+  },
+  {
+    path: AppRoutes.Add,
+    loadChildren: () =>
+      import('./modules/add-post/add-post.module').then(m => m.AddPostModule)
+  },
+  {
+    path: '',
+    redirectTo: AppRoutes.Posts,
+    pathMatch: 'full'
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

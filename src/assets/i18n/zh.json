@@ -1,0 +1,24 @@
+{
+  "TITLE": "树洞",
+  "SUBTITLE": "匿名讨论区",
+  "LANGUAGE": "语言",
+  "ADD_YOUR_POST": "发帖",
+  "ADD": {
+    "TITLE": "标题",
+    "MESSAGE": "内容",
+    "SUBMIT": "保存",
+    "CANCEL": "取消"
+  },
+  "ERROR": {
+    "REQUIRED": "此项不能为空",
+    "MINLENGTH": "此项不过长",
+    "MAXLENGTH": "此项太长了"
+  },
+  "SORT_BY": {
+    "OLDEST_POSTS": "最旧的帖子",
+    "NEWEST_POSTS": "最新的帖子",
+    "MOST_LIKES": "最多点赞",
+    "MOST_DISLIKES": "最多踩",
+    "MOST_COMMENTS": "最多评论"
+  }
+}
