@@ -6,23 +6,22 @@
         {{ "TITLE" | translate }}
       </a>
     </nz-page-header-title>
-    <nz-page-header-subtitle>
+    <nz-page-header-subtitle class="dn db-ns">
       {{ "SUBTITLE" | translate }}
     </nz-page-header-subtitle>
     <nz-page-header-extra>
-      <a nz-button nzType="primary" [routerLink]="['/add']">
-        <i nz-icon nzType="edit"></i>
-        {{ "ADD_YOUR_POST" | translate }}
+      <a nz-button nzSize="large" nzType="primary" [routerLink]="['/add']">
+        <i nz-icon nzType="edit"></i>{{ "ADD_YOUR_POST" | translate }}
       </a>
 
       <button
         nz-button
+        nzSize="large"
         nz-dropdown
         [nzDropdownMenu]="languageMenu"
         nzPlacement="bottomRight"
       >
-        <i nz-icon nzType="global"></i>
-        {{ "LANGUAGE" | translate }}
+        <i nz-icon nzType="global"></i>{{ "LANGUAGE" | translate }}
       </button>
       <nz-dropdown-menu #languageMenu="nzDropdownMenu">
         <ul nz-menu nzSelectable>
@@ -45,12 +44,6 @@
     </nz-page-header-extra>
   </nz-page-header>
   <nz-content>
-    <nz-alert
-      nzBanner
-      nzType="error"
-      nzMessage="Error text"
-      nzCloseable
-    ></nz-alert>
     <router-outlet></router-outlet>
   </nz-content>
   <nz-footer>

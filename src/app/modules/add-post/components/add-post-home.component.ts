@@ -1,10 +1,12 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngxs/store';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { first } from 'rxjs/operators';
 
 import { getLanguage, getUuid } from 'src/app/store/user/user.selectors';
-import { AddPostService } from '../services/add-post.service';
 import { SaveAddedPost } from '../store/add-post.actions';
 
 @Component({
@@ -20,17 +22,18 @@ export class AddPostHomeComponent {
     ]),
     message: new FormControl(null, [
       Validators.required,
-      Validators.minLength(100),
-      Validators.maxLength(2000)
+      Validators.minLength(50),
+      Validators.maxLength(1000)
     ])
   });
 
   isLoading = false;
 
   constructor(
-    private addPostService: AddPostService,
     private store: Store,
-    private location: Location
+    private location: Location,
+    private modal: NzModalService,
+    private tranlsateService: TranslateService
   ) {}
 
   savePost() {
@@ -52,12 +55,30 @@ export class AddPostHomeComponent {
           )
         )
         .subscribe(() => {
+          this.location.back();
           this.isLoading = false;
         });
     }
   }
 
   onCancel() {
-    this.location.back();
+    if (this.addForm.dirty) {
+      this.tranlsateService
+        .get('ADD.CANCEL_MODAL')
+        .pipe(first())
+        .subscribe(cancelModal => {
+          this.modal.confirm({
+            nzTitle: cancelModal.TITLE,
+            nzContent: cancelModal.CONTENT,
+            nzOkText: cancelModal.OK,
+            nzCancelText: cancelModal.NO,
+            nzOnOk: () => {
+              this.location.back();
+            }
+          });
+        });
+    } else {
+      this.location.back();
+    }
   }
 }

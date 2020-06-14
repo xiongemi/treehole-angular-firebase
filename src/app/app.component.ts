@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 import { Language } from './models/language.type';
 import { SetLanguage } from './store/user/user.actions';
 import { getLanguage } from './store/user/user.selectors';
-import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',

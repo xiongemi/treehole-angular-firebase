@@ -7,12 +7,18 @@
     "TITLE": "标题",
     "MESSAGE": "内容",
     "SUBMIT": "保存",
-    "CANCEL": "取消"
+    "CANCEL": "取消",
+    "CANCEL_MODAL": {
+      "TITLE": "取消发帖",
+      "CONTENT": "你有未保存的信息，你确定你要取消发帖吗？",
+      "OK": "确定，不保存",
+      "NO": "继续编辑"
+    }
   },
   "ERROR": {
     "REQUIRED": "此项不能为空",
-    "MINLENGTH": "此项不过长",
-    "MAXLENGTH": "此项太长了"
+    "MINLENGTH": "此项字数不够",
+    "MAXLENGTH": "此项字数太多了"
   },
   "SORT_BY": {
     "OLDEST_POSTS": "最旧的帖子",
@@ -20,5 +26,9 @@
     "MOST_LIKES": "最多点赞",
     "MOST_DISLIKES": "最多踩",
     "MOST_COMMENTS": "最多评论"
+  },
+  "MESSAGES": {
+    "SUCCESS": "成功保存！",
+    "FAILED": "不好意思~ 出错了，请重试一次。"
   }
 }

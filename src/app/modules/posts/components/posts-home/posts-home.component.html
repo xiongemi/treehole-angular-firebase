@@ -1,5 +1,5 @@
-<form [formGroup]="searchForm">
-  <nz-select formControlName="sortBy" class="w4">
+<form [formGroup]="searchForm" class="mb3">
+  <nz-select nzPlaceHolder="Sort by" formControlName="sortBy">
     <nz-option
       [nzValue]="SortBy.NewestPosts"
       [nzLabel]="SortBy.NewestPosts | translate"
@@ -36,15 +36,15 @@
     {{ post.message }}
     <ul nz-list-item-actions>
       <nz-list-item-action>
-        <i nz-icon nzType="star-o"></i>
+        <i nz-icon nzType="like"></i>
         {{ post.likesCount }}
       </nz-list-item-action>
       <nz-list-item-action>
-        <i nz-icon nzType="star-o"></i>
+        <i nz-icon nzType="dislike"></i>
         {{ post.dislikesCount }}
       </nz-list-item-action>
       <nz-list-item-action>
-        <i nz-icon nzType="star-o"></i>
+        <i nz-icon nzType="comment"></i>
         {{ post.commentsCount }}
       </nz-list-item-action>
     </ul>

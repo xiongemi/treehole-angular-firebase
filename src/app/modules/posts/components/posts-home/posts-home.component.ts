@@ -17,7 +17,7 @@ import { SortBy } from '../../models/sort-by.enum';
 export class PostsHomeComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
   searchForm = new FormGroup({
-    sortBy: new FormControl()
+    sortBy: new FormControl(SortBy.NewestPosts)
   });
   SortBy = SortBy;
 
@@ -26,10 +26,23 @@ export class PostsHomeComponent implements OnInit, OnDestroy {
   constructor(private store: Store) {}
 
   ngOnInit() {
-    this.store.dispatch(new GetPosts(this.store.selectSnapshot(getLanguage)));
+    this.store.dispatch(
+      new GetPosts(
+        this.store.selectSnapshot(getLanguage),
+        this.searchForm.value.sortBy
+      )
+    );
     this.subscription.add(
       this.store.select(getPosts).subscribe(posts => {
         this.posts = posts;
+      })
+    );
+
+    this.subscription.add(
+      this.searchForm.get('sortBy').valueChanges.subscribe((sortBy: SortBy) => {
+        this.store.dispatch(
+          new GetPosts(this.store.selectSnapshot(getLanguage), sortBy)
+        );
       })
     );
   }

@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AntDesignModule } from 'src/app/ant-design.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { AddPostRoutingModule } from './add-post-routing.module';
 import { AddPostHomeComponent } from './components/add-post-home.component';
 import { AddPostService } from './services/add-post.service';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { AddPostState } from './store/add-post.state';
+import { NgxsModule } from '@ngxs/store';
 
 @NgModule({
   declarations: [AddPostHomeComponent],
@@ -14,7 +16,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     SharedModule,
     AddPostRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxsModule.forFeature([AddPostState])
   ],
   providers: [AddPostService]
 })

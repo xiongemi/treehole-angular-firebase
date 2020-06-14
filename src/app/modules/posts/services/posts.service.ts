@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 
 import { Language } from 'src/app/models/language.type';
 import { PostResponse } from 'src/app/models/post-response.interface';
+import { SortBy, SortByRequest } from '../models/sort-by.enum';
 
 @Injectable()
 export class PostsService {
@@ -17,11 +18,12 @@ export class PostsService {
 
   getPosts(
     language: Language = 'en',
-    orderByField: string = 'createdAt',
-    orderByDirection: 'desc' | 'asc' = 'desc',
+    sortBy: SortBy,
     lastVisited = null,
     limitSize = 24
   ): Observable<DocumentChangeAction<PostResponse>[]> {
+    const { orderByField, orderByDirection } = SortByRequest[sortBy];
+
     return this.firestore
       .collection<PostResponse>('posts', (ref: CollectionReference) => {
         let query = ref

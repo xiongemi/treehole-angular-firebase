@@ -2,12 +2,18 @@
   "TITLE": "Treehole",
   "SUBTITLE": "Annoymouse Disucssion Forum",
   "LANGUAGE": "Language",
-  "ADD_YOUR_POST": "Add Your Post",
+  "ADD_YOUR_POST": "Post",
   "ADD": {
     "TITLE": "Title",
     "MESSAGE": "Message",
     "SUBMIT": "Submit",
-    "CANCEL": "Cancel"
+    "CANCEL": "Cancel",
+    "CANCEL_MODAL": {
+      "TITLE": "Cancel Posting",
+      "CONTENT": "You got unsaved changes. Are you sure you want to cancel this post?",
+      "OK": "Yes, don't save.",
+      "NO": "No, continue editing."
+    }
   },
   "ERROR": {
     "REQUIRED": "Input is required",
@@ -20,5 +26,9 @@
     "MOST_LIKES": "Most Likes",
     "MOST_DISLIKES": "Most Dislikes",
     "MOST_COMMENTS": "Most Comments"
+  },
+  "MESSAGES": {
+    "SUCCESS": "Saved successfully!",
+    "FAILED": "Oops! Something went wrong~ Please try again."
   }
 }

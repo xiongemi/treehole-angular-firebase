@@ -23,7 +23,7 @@ export class PostsState {
   @Action(GetPosts)
   feedAnimals(ctx: StateContext<PostsStateModel>, action: GetPosts) {
     ctx.patchState({ posts: null });
-    return this.postsSerivce.getPosts(action.language).pipe(
+    return this.postsSerivce.getPosts(action.language, action.sortBy).pipe(
       tap(docs => {
         const posts: Post[] = docs.map(doc => {
           const post = transformPostResponseToPost(doc.payload.doc.data());

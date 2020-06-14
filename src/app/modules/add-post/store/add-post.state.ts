@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Action, State, StateContext } from '@ngxs/store';
 import { catchError } from 'rxjs/operators';
+
+import { HandleApiFailure } from 'src/app/store/app.actions';
 import { AddPostService } from '../services/add-post.service';
 import { SaveAddedPost } from './add-post.actions';
-import { HandleApiFailure } from 'src/app/store/app.actions';
 
 @State<null>({
   name: 'addPost',
   defaults: null
 })
 @Injectable()
-export class PostsState {
+export class AddPostState {
   constructor(private addPostService: AddPostService) {}
 
   @Action(SaveAddedPost)
