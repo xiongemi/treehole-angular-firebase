@@ -1,5 +1,5 @@
 <form [formGroup]="searchForm" class="mb3">
-  <nz-select nzPlaceHolder="Sort by" formControlName="sortBy">
+  <nz-select formControlName="sortBy">
     <nz-option
       [nzValue]="SortBy.NewestPosts"
       [nzLabel]="SortBy.NewestPosts | translate"
@@ -27,13 +27,13 @@
   <nz-list-item *ngFor="let post of posts" [nzNoFlex]="true">
     <nz-list-item-meta>
       <nz-list-item-meta-title>
-        {{ post.title }}
+        <a [routerLink]="['/post', post.id]">{{ post.title }}</a>
       </nz-list-item-meta-title>
       <nz-list-item-meta-description>
         {{ post.createdAt | date: "medium" }}
       </nz-list-item-meta-description>
     </nz-list-item-meta>
-    {{ post.message }}
+    <a [routerLink]="['/post', post.id]">{{ post.message }}</a>
     <ul nz-list-item-actions>
       <nz-list-item-action>
         <i nz-icon nzType="like"></i>
@@ -44,9 +44,21 @@
         {{ post.dislikesCount }}
       </nz-list-item-action>
       <nz-list-item-action>
-        <i nz-icon nzType="comment"></i>
-        {{ post.commentsCount }}
+        <a [routerLink]="['/post', post.id]">
+          <i nz-icon nzType="comment"></i>
+          {{ post.commentsCount }}
+        </a>
       </nz-list-item-action>
     </ul>
   </nz-list-item>
 </nz-list>
+<div class="tc mt3">
+  <nz-pagination
+    nzShowSizeChanger
+    [nzPageIndex]="pageIndex$ | async"
+    [nzPageSize]="pageSize$ | async"
+    [nzTotal]="totalPostNumber$ | async"
+    (nzPageSizeChang)="onPageSizeChange($event)"
+    (nzPageIndexChange)="onPageIndexChange($event)"
+  ></nz-pagination>
+</div>

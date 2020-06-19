@@ -1,0 +1,43 @@
+<nz-card
+  class="w-100"
+  [nzLoading]="!post"
+  [nzTitle]="post?.title"
+  [nzActions]="[actionLike, actionDislike, actionComment]"
+>
+  <p nz-typography>
+    {{ post?.message }}
+  </p>
+  <time nz-typography nzType="secondary">
+    {{ post?.createdAt | date: "medium" }}
+  </time>
+</nz-card>
+
+<ng-template #actionLike>
+  <nz-badge [nzCount]="post?.likesCount">
+    <i nz-icon nzType="like"></i>
+  </nz-badge>
+</ng-template>
+
+<ng-template #actionDislike>
+  <nz-badge [nzCount]="post?.dislikesCount">
+    <i nz-icon nzType="dislike"></i>
+  </nz-badge>
+</ng-template>
+
+<ng-template #actionComment>
+  <button nz-button nzType="link" class="w-100" (click)="showReplyTo()">
+    <nz-badge [nzCount]="post?.commentsCount">
+      <i nz-icon nzType="comment"></i>
+      {{ "REPLY" | translate }}
+    </nz-badge>
+  </button>
+</ng-template>
+
+<app-post-comments
+  [comments]="comments"
+  [postId]="postId"
+  [shouldShowReplyTo]="shouldShowReplyTo"
+  [parentDocId]="postId"
+  (cancelComment)="hideReplyTo()"
+  class="db pv3 bg-white"
+></app-post-comments>

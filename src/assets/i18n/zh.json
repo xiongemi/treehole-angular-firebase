@@ -11,7 +11,7 @@
     "CANCEL_MODAL": {
       "TITLE": "取消发帖",
       "CONTENT": "你有未保存的信息，你确定你要取消发帖吗？",
-      "OK": "确定，不保存",
+      "YES": "确定，不保存",
       "NO": "继续编辑"
     }
   },
@@ -24,7 +24,7 @@
     "OLDEST_POSTS": "最旧的帖子",
     "NEWEST_POSTS": "最新的帖子",
     "MOST_LIKES": "最多点赞",
-    "MOST_DISLIKES": "最多踩",
+    "MOST_DISLIKES": "最多不喜欢",
     "MOST_COMMENTS": "最多评论"
   },
   "MESSAGES": {

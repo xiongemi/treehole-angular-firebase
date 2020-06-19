@@ -6,6 +6,7 @@ import { Store } from '@ngxs/store';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { first } from 'rxjs/operators';
 
+import { HandleApiSuccess } from 'src/app/store/app.actions';
 import { getLanguage, getUuid } from 'src/app/store/user/user.selectors';
 import { SaveAddedPost } from '../store/add-post.actions';
 
@@ -55,6 +56,7 @@ export class AddPostHomeComponent {
           )
         )
         .subscribe(() => {
+          this.store.dispatch(new HandleApiSuccess());
           this.location.back();
           this.isLoading = false;
         });
@@ -70,9 +72,9 @@ export class AddPostHomeComponent {
           this.modal.confirm({
             nzTitle: cancelModal.TITLE,
             nzContent: cancelModal.CONTENT,
-            nzOkText: cancelModal.OK,
-            nzCancelText: cancelModal.NO,
-            nzOnOk: () => {
+            nzOkText: cancelModal.NO,
+            nzCancelText: cancelModal.YES,
+            nzOnCancel: () => {
               this.location.back();
             }
           });

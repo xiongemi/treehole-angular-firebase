@@ -4,3 +4,8 @@
 .ant-page-header-heading {
   flex-wrap: wrap;
 }
+
+.ant-comment-content-author > a,
+.ant-comment-content-author > span {
+  white-space: normal;
+}

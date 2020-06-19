@@ -1,13 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngxs/store';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Post } from 'src/app/models/post.interface';
 import { getLanguage } from 'src/app/store/user/user.selectors';
-
-import { GetPosts } from '../../store/posts.actions';
-import { getPosts } from '../../store/posts.selectors';
-import { FormGroup, FormControl } from '@angular/forms';
 import { SortBy } from '../../models/sort-by.enum';
+import {
+  ChangePostsPageIndex,
+  ChangePostsPageSize,
+  GetPosts
+} from '../../store/posts.actions';
+import {
+  getPostsOncurrentPage,
+  getPostsPageSize,
+  getTotalPostsNumber
+} from '../../store/posts.selectors';
 
 @Component({
   selector: 'app-posts-home',
@@ -21,6 +28,10 @@ export class PostsHomeComponent implements OnInit, OnDestroy {
   });
   SortBy = SortBy;
 
+  totalPostNumber$: Observable<number>;
+  pageSize$: Observable<number>;
+  pageIndex$: Observable<number>;
+
   private subscription = new Subscription();
 
   constructor(private store: Store) {}
@@ -33,7 +44,7 @@ export class PostsHomeComponent implements OnInit, OnDestroy {
       )
     );
     this.subscription.add(
-      this.store.select(getPosts).subscribe(posts => {
+      this.store.select(getPostsOncurrentPage).subscribe(posts => {
         this.posts = posts;
       })
     );
@@ -45,9 +56,21 @@ export class PostsHomeComponent implements OnInit, OnDestroy {
         );
       })
     );
+
+    this.totalPostNumber$ = this.store.select(getTotalPostsNumber);
+    this.pageSize$ = this.store.select(getPostsPageSize);
+    this.pageIndex$ = this.store.select(getPostsPageSize);
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  onPageIndexChange(pageIndex: number) {
+    this.store.dispatch(new ChangePostsPageIndex(pageIndex));
+  }
+
+  onPageSizeChange(pageSize: number) {
+    this.store.dispatch(new ChangePostsPageSize(pageSize));
   }
 }

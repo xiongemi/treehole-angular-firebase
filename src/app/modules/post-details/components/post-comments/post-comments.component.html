@@ -1,0 +1,55 @@
+<app-comment-reply-to
+  class="db ph3-ns"
+  *ngIf="shouldShowReplyTo"
+  (saveComment)="saveComment($event)"
+  (cancel)="cancelComment.emit()"
+></app-comment-reply-to>
+
+<nz-comment
+  *ngFor="let comment of comments"
+  nzDatetime="{{ comment.createdAt | date: 'medium' }}"
+>
+  <nz-comment-content>
+    <p>
+      {{ comment.comment }}
+    </p>
+  </nz-comment-content>
+  <nz-comment-action>
+    <i
+      nz-tooltip
+      nzTitle="Like"
+      nz-icon
+      nzType="like"
+      [nzTheme]="comment.likesCount > 0 ? 'twotone' : 'outline'"
+      (click)="like()"
+    ></i>
+    <span class="count like">{{ comment.likesCount }}</span>
+  </nz-comment-action>
+  <nz-comment-action>
+    <i
+      nz-tooltip
+      nzTitle="Dislike"
+      nz-icon
+      nzType="dislike"
+      [nzTheme]="comment.dislikesCount > 0 ? 'twotone' : 'outline'"
+      (click)="dislike()"
+    ></i>
+    <span class="count dislike">{{ comment.dislikesCount }}</span>
+  </nz-comment-action>
+
+  <nz-comment-action>
+    <button nz-button nzType="link" (click)="showReplyTo(comment)">
+      <i nz-icon nzType="comment"></i>
+      {{ "REPLY" | translate }}
+    </button>
+  </nz-comment-action>
+
+  <app-post-comments
+    *ngIf="comment.childComments || comment.shouldShowReplyTo"
+    [shouldShowReplyTo]="comment.shouldShowReplyTo"
+    [postId]="postId"
+    [comments]="comment.childComments"
+    [parentDocId]="comment.id"
+    (cancelComment)="hideReplyTo(comment)"
+  ></app-post-comments>
+</nz-comment>

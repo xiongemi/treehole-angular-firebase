@@ -14,6 +14,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NzCommentModule } from 'ng-zorro-antd/comment';
 
 const modules = [
   NzButtonModule,
@@ -30,7 +32,9 @@ const modules = [
   NzTypographyModule,
   NzSelectModule,
   NzMessageModule,
-  NzModalModule
+  NzModalModule,
+  NzPaginationModule,
+  NzCommentModule
 ];
 
 @NgModule({

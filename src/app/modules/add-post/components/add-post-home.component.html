@@ -30,7 +30,13 @@
     </nz-form-control>
   </nz-form-item>
   <nz-form-item class="justify-center">
-    <button nz-button nzSize="large" class="mr4" (click)="onCancel()">
+    <button
+      nz-button
+      nzSize="large"
+      class="mr4"
+      (click)="onCancel()"
+      type="button"
+    >
       <i nz-icon nzType="left"></i>
       {{ "ADD.CANCEL" | translate }}
     </button>

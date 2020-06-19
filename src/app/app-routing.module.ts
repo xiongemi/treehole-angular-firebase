@@ -14,6 +14,13 @@ const routes: Routes = [
       import('./modules/add-post/add-post.module').then(m => m.AddPostModule)
   },
   {
+    path: AppRoutes.Post,
+    loadChildren: () =>
+      import('./modules/post-details/post-details.module').then(
+        m => m.PostDetailsModule
+      )
+  },
+  {
     path: '',
     redirectTo: AppRoutes.Posts,
     pathMatch: 'full'

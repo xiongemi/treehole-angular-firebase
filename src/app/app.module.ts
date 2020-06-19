@@ -25,6 +25,7 @@ import { AntDesignModule } from './ant-design.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UserState } from './store/user/user.state';
+import { AppState } from './store/app.state';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -51,7 +52,7 @@ registerLocaleData(en);
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
     AntDesignModule,
-    NgxsModule.forRoot([UserState], {
+    NgxsModule.forRoot([AppState, UserState], {
       developmentMode: !environment.production
     }),
     NgxsFormPluginModule.forRoot(),

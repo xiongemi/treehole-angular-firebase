@@ -6,3 +6,15 @@ export class GetPosts {
 
   constructor(public language: Language, public sortBy: SortBy) {}
 }
+
+export class ChangePostsPageIndex {
+  static readonly type = '[Posts] Change Page Index';
+
+  constructor(public pageIndex: number) {}
+}
+
+export class ChangePostsPageSize {
+  static readonly type = '[Posts] Change Page Size';
+
+  constructor(public pageSize: number) {}
+}

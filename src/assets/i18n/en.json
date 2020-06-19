@@ -3,6 +3,7 @@
   "SUBTITLE": "Annoymouse Disucssion Forum",
   "LANGUAGE": "Language",
   "ADD_YOUR_POST": "Post",
+  "REPLY": "Reply",
   "ADD": {
     "TITLE": "Title",
     "MESSAGE": "Message",
@@ -11,7 +12,7 @@
     "CANCEL_MODAL": {
       "TITLE": "Cancel Posting",
       "CONTENT": "You got unsaved changes. Are you sure you want to cancel this post?",
-      "OK": "Yes, don't save.",
+      "YES": "Yes, don't save.",
       "NO": "No, continue editing."
     }
   },

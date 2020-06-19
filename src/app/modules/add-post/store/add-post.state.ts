@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Action, State, StateContext } from '@ngxs/store';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
-import { HandleApiFailure } from 'src/app/store/app.actions';
+import { HandleApiFailure, HandleApiSuccess } from 'src/app/store/app.actions';
 import { AddPostService } from '../services/add-post.service';
 import { SaveAddedPost } from './add-post.actions';
 
@@ -19,8 +19,12 @@ export class AddPostState {
     this.addPostService
       .savePost(action.title, action.message, action.uuid, action.language)
       .pipe(
+        tap(() => {
+          return ctx.dispatch(new HandleApiSuccess());
+        }),
         catchError(error => {
-          return ctx.dispatch(new HandleApiFailure(error));
+          ctx.dispatch(new HandleApiFailure());
+          throw error;
         })
       );
   }

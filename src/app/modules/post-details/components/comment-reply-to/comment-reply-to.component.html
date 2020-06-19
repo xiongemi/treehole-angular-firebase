@@ -1,0 +1,36 @@
+<form [formGroup]="replyToFormGroup" (ngSubmit)="onSubmit()">
+  <nz-form-item>
+    <nz-form-control [nzErrorTip]="inputErrorsTemplate">
+      <textarea
+        nz-input
+        formControlName="comment"
+        placeholder="Comment"
+      ></textarea>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control>
+      <button nz-button type="button" (click)="onCancel()" class="mr4">
+        <i nz-icon nzType="close"></i>
+        {{ "ADD.CANCEL" | translate }}
+      </button>
+      <button nz-button nzType="primary" type="submit">
+        <i nz-icon nzType="save"></i>
+        {{ "ADD.SUBMIT" | translate }}
+      </button>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+
+<ng-template #inputErrorsTemplate let-control>
+  <ng-container *ngIf="control.hasError('maxlength')">
+    {{ "ERROR.MAXLENGTH" | translate }}
+  </ng-container>
+  <ng-container *ngIf="control.hasError('minlength')">
+    {{ "ERROR.MINLENGTH" | translate }}
+  </ng-container>
+  <ng-container *ngIf="control.hasError('required')">
+    {{ "ERROR.REQUIRED" | translate }}
+  </ng-container>
+</ng-template>

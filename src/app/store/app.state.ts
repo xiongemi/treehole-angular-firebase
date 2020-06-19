@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Action, State } from '@ngxs/store';
-import { NzMessageService } from 'ng-zorro-antd/message/public-api';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { first } from 'rxjs/operators';
 
 import { HandleApiFailure, HandleApiSuccess } from './app.actions';
@@ -11,7 +11,7 @@ import { HandleApiFailure, HandleApiSuccess } from './app.actions';
   defaults: null
 })
 @Injectable()
-export class UserState {
+export class AppState {
   constructor(
     private message: NzMessageService,
     private translateService: TranslateService
@@ -33,7 +33,7 @@ export class UserState {
       .get(action.customMessage || 'MESSAGES.SUCCESS')
       .pipe(first())
       .subscribe(message => {
-        this.message.error(message);
+        this.message.success(message);
       });
   }
 }

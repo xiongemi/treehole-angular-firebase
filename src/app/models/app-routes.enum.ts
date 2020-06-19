@@ -1,4 +1,5 @@
 export enum AppRoutes {
   Posts = 'posts',
-  Add = 'add'
+  Add = 'add',
+  Post = 'post'
 }

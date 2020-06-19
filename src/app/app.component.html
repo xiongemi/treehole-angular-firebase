@@ -2,7 +2,7 @@
   <nz-page-header>
     <nz-page-header-title>
       <a [routerLink]="['/']">
-        <img src="/assets/treehole-icon-small.png" />
+        <img src="/assets/treehole-icon-small.png" alt="logo" />
         {{ "TITLE" | translate }}
       </a>
     </nz-page-header-title>
@@ -10,13 +10,12 @@
       {{ "SUBTITLE" | translate }}
     </nz-page-header-subtitle>
     <nz-page-header-extra>
-      <a nz-button nzSize="large" nzType="primary" [routerLink]="['/add']">
+      <a nz-button nzType="primary" [routerLink]="['/add']">
         <i nz-icon nzType="edit"></i>{{ "ADD_YOUR_POST" | translate }}
       </a>
 
       <button
         nz-button
-        nzSize="large"
         nz-dropdown
         [nzDropdownMenu]="languageMenu"
         nzPlacement="bottomRight"

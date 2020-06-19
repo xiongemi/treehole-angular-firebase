@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, QuerySnapshot } from '@angular/fire/firestore';
 import { Action, State, StateContext } from '@ngxs/store';
-import { tap } from 'rxjs/operators';
+import { catchError, tap, first, timeout } from 'rxjs/operators';
 
-import { transformPostResponseToPost } from 'src/app/models/post-response.interface';
-import { Post } from 'src/app/models/post.interface';
+import { HandleApiFailure } from 'src/app/store/app.actions';
 import { PostsService } from '../services/posts.service';
 import { initPostsStateModel } from './post-state-model-init.const';
 import { PostsStateModel } from './posts-state-model.interface';
-import { GetPosts } from './posts.actions';
+import {
+  ChangePostsPageIndex,
+  ChangePostsPageSize,
+  GetPosts
+} from './posts.actions';
+import { reuqestTimeout } from 'src/app/models/timeout.const';
 
 @State<PostsStateModel>({
   name: 'posts',
@@ -21,17 +24,33 @@ export class PostsState {
   constructor(private postsSerivce: PostsService) {}
 
   @Action(GetPosts)
-  feedAnimals(ctx: StateContext<PostsStateModel>, action: GetPosts) {
+  getPosts(ctx: StateContext<PostsStateModel>, action: GetPosts) {
     ctx.patchState({ posts: null });
     return this.postsSerivce.getPosts(action.language, action.sortBy).pipe(
-      tap(docs => {
-        const posts: Post[] = docs.map(doc => {
-          const post = transformPostResponseToPost(doc.payload.doc.data());
-          post.id = doc.payload.doc.id;
-          return post;
-        });
+      timeout(reuqestTimeout),
+      tap(posts => {
         ctx.patchState({ posts });
+      }),
+      catchError(error => {
+        ctx.dispatch(new HandleApiFailure());
+        throw error;
       })
     );
+  }
+
+  @Action(ChangePostsPageIndex)
+  changePostsPageIndex(
+    ctx: StateContext<PostsStateModel>,
+    action: ChangePostsPageIndex
+  ) {
+    ctx.patchState({ pageIndex: action.pageIndex });
+  }
+
+  @Action(ChangePostsPageSize)
+  changePostsPageNumber(
+    ctx: StateContext<PostsStateModel>,
+    action: ChangePostsPageSize
+  ) {
+    ctx.patchState({ pageSize: action.pageSize });
   }
 }
