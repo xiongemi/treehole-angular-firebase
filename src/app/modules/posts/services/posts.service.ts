@@ -13,7 +13,7 @@ import {
   transformPostResponseToPost
 } from 'src/app/models/post-response.interface';
 import { Post } from 'src/app/models/post.interface';
-import { SortBy, SortByRequest } from '../models/sort-by.enum';
+import { SortBy, SortByRequest } from '../../../models/sort-by.enum';
 
 @Injectable()
 export class PostsService {
@@ -47,19 +47,4 @@ export class PostsService {
         })
       );
   }
-
-  /* loadMorePosts(
-    language: Language = 'en',
-    orderByField: string = 'createdAt',
-    orderByDirection: 'desc' | 'asc' = 'desc',
-    limitSize = 24
-  ): Observable<QuerySnapshot<DocumentData>> {
-    return this.getPosts(
-      language,
-      orderByField,
-      orderByDirection,
-      this.lastVisited,
-      limitSize
-    );
-  } */
 }

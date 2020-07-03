@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, State, StateContext } from '@ngxs/store';
-import { catchError, tap, first, timeout } from 'rxjs/operators';
+import { catchError, tap, timeout } from 'rxjs/operators';
 
 import { HandleApiFailure } from 'src/app/store/app.actions';
 import { PostsService } from '../services/posts.service';
@@ -27,7 +27,6 @@ export class PostsState {
   getPosts(ctx: StateContext<PostsStateModel>, action: GetPosts) {
     ctx.patchState({ posts: null });
     return this.postsSerivce.getPosts(action.language, action.sortBy).pipe(
-      timeout(reuqestTimeout),
       tap(posts => {
         ctx.patchState({ posts });
       }),

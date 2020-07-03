@@ -7,7 +7,7 @@ export interface Post {
   createdAt: Date;
   uuid: string;
   language: Language;
-  likesCount?: number;
-  dislikesCount?: number;
-  commentsCount?: number;
+  likesCount: number;
+  dislikesCount: number;
+  commentsCount: number;
 }

@@ -16,6 +16,8 @@ export function transformCommentResponoseToComment(
 ): Comment {
   return {
     ...commentResponse,
-    createdAt: commentResponse.createdAt.toDate()
+    createdAt: commentResponse.createdAt.toDate(),
+    shouldShowChildComments: true,
+    shouldShowReplyTo: false
   };
 }

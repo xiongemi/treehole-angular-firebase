@@ -1,14 +1,14 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngxs/store';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { first } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
-import { HandleApiSuccess } from 'src/app/store/app.actions';
+import { ModalService } from 'src/app/shared/services/modal.service';
+import { HandleApiFailure, HandleApiSuccess } from 'src/app/store/app.actions';
 import { getLanguage, getUuid } from 'src/app/store/user/user.selectors';
 import { SaveAddedPost } from '../store/add-post.actions';
+import { markFormDeepDirty } from 'src/app/shared/services/form.service';
 
 @Component({
   selector: 'app-add-post-home',
@@ -33,17 +33,11 @@ export class AddPostHomeComponent {
   constructor(
     private store: Store,
     private location: Location,
-    private modal: NzModalService,
-    private tranlsateService: TranslateService
+    private modalService: ModalService
   ) {}
 
   savePost() {
-    for (const i in this.addForm.controls) {
-      if (this.addForm.controls.hasOwnProperty(i)) {
-        this.addForm.controls[i].markAsDirty();
-        this.addForm.controls[i].updateValueAndValidity();
-      }
-    }
+    markFormDeepDirty(this.addForm);
     if (this.addForm.valid) {
       this.isLoading = true;
       this.store
@@ -65,19 +59,11 @@ export class AddPostHomeComponent {
 
   onCancel() {
     if (this.addForm.dirty) {
-      this.tranlsateService
-        .get('ADD.CANCEL_MODAL')
-        .pipe(first())
-        .subscribe(cancelModal => {
-          this.modal.confirm({
-            nzTitle: cancelModal.TITLE,
-            nzContent: cancelModal.CONTENT,
-            nzOkText: cancelModal.NO,
-            nzCancelText: cancelModal.YES,
-            nzOnCancel: () => {
-              this.location.back();
-            }
-          });
+      this.modalService
+        .cancelEditing()
+        .pipe(filter(Boolean))
+        .subscribe(() => {
+          this.location.back();
         });
     } else {
       this.location.back();

@@ -1,4 +1,4 @@
-<form [formGroup]="searchForm" class="mb3">
+<form [formGroup]="searchForm" class="mb3" *ngIf="!loading">
   <nz-select formControlName="sortBy">
     <nz-option
       [nzValue]="SortBy.NewestPosts"
@@ -23,7 +23,12 @@
   </nz-select>
 </form>
 
-<nz-list nzItemLayout="vertical" [nzBordered]="true" class="bg-white">
+<nz-list
+  [nzLoading]="loading"
+  nzItemLayout="vertical"
+  [nzBordered]="true"
+  class="bg-white"
+>
   <nz-list-item *ngFor="let post of posts" [nzNoFlex]="true">
     <nz-list-item-meta>
       <nz-list-item-meta-title>

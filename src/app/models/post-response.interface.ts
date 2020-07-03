@@ -10,9 +10,10 @@ export interface PostResponse {
   createdAt: Timestamp;
   uuid: string;
   language: Language;
-  likesCount?: number;
-  dislikesCount?: number;
-  commentsCount?: number;
+  parentDocId: string;
+  likesCount: number;
+  dislikesCount: number;
+  commentsCount: number;
 }
 
 export function transformPostResponseToPost(postResponse: PostResponse): Post {

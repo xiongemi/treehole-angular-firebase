@@ -4,7 +4,8 @@ import {
   AngularFirestore,
   DocumentChangeAction,
   DocumentReference,
-  DocumentSnapshot
+  DocumentSnapshot,
+  CollectionReference
 } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -13,6 +14,7 @@ import {
   transformPostResponseToPost
 } from 'src/app/models/post-response.interface';
 import { Post } from 'src/app/models/post.interface';
+import { SortBy, SortByRequest } from '../../../models/sort-by.enum';
 import {
   CommentResponse,
   transformCommentResponoseToComment
@@ -39,23 +41,36 @@ export class PostDetailsService {
   }
 
   public saveComment(
-    comment: Comment,
+    comment: string,
+    uuid: string,
+    parentDocId: string,
     postId: string
   ): Observable<DocumentReference> {
+    const request: Comment = {
+      comment,
+      uuid,
+      parentDocId,
+      createdAt: new Date(),
+      likesCount: 0,
+      dislikesCount: 0
+    };
     return from(
       this.firestore
         .collection('posts')
         .doc(postId)
         .collection('comments')
-        .add(comment)
+        .add(request)
     );
   }
 
-  public getComments(postId: string): Observable<Comment[]> {
+  public getComments(postId: string, sortBy: SortBy): Observable<Comment[]> {
+    const { orderByField, orderByDirection } = SortByRequest[sortBy];
     return this.firestore
       .collection('posts')
       .doc(postId)
-      .collection('comments')
+      .collection('comments', (ref: CollectionReference) =>
+        ref.orderBy(orderByField, orderByDirection)
+      )
       .snapshotChanges()
       .pipe(
         map((docs: DocumentChangeAction<CommentResponse>[]) => {

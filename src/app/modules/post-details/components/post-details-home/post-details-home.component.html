@@ -13,31 +13,60 @@
 </nz-card>
 
 <ng-template #actionLike>
-  <nz-badge [nzCount]="post?.likesCount">
-    <i nz-icon nzType="like"></i>
-  </nz-badge>
+  <button nz-button nzType="link" class="w-100" (click)="like()">
+    <i nz-icon nzType="like"></i> {{ post?.likesCount }}
+  </button>
 </ng-template>
 
 <ng-template #actionDislike>
-  <nz-badge [nzCount]="post?.dislikesCount">
-    <i nz-icon nzType="dislike"></i>
-  </nz-badge>
+  <button nz-button nzType="link" class="w-100" (click)="dislike()">
+    <i nz-icon nzType="dislike"></i> {{ post?.dislikesCount }}
+  </button>
 </ng-template>
 
 <ng-template #actionComment>
   <button nz-button nzType="link" class="w-100" (click)="showReplyTo()">
-    <nz-badge [nzCount]="post?.commentsCount">
-      <i nz-icon nzType="comment"></i>
-      {{ "REPLY" | translate }}
-    </nz-badge>
+    <i nz-icon nzType="comment"></i>
+    {{ "REPLY" | translate }}
   </button>
 </ng-template>
 
-<app-post-comments
-  [comments]="comments"
-  [postId]="postId"
-  [shouldShowReplyTo]="shouldShowReplyTo"
+<app-comment-reply-to
+  *ngIf="shouldShowReplyTo"
+  class="db ph3 pt3 pb1"
   [parentDocId]="postId"
-  (cancelComment)="hideReplyTo()"
-  class="db pv3 bg-white"
-></app-post-comments>
+  [postId]="postId"
+  (cancel)="hideReplyTo()"
+></app-comment-reply-to>
+
+<ng-container *ngIf="comments && comments.length">
+  <nz-divider [nzText]="'COMMENTS.COMMENTS' | translate"></nz-divider>
+
+  <div class="ph3 flex justify-between">
+    {{
+      (comments.length === 1 ? "COMMENTS.REPLY" : "COMMENTS.REPLIES")
+        | translate: { count: comments.length }
+    }}
+
+    <nz-select [formControl]="sortBy">
+      <nz-option
+        [nzValue]="SortBy.MostLikes"
+        [nzLabel]="SortBy.MostLikes | translate"
+      ></nz-option>
+      <nz-option
+        [nzValue]="SortBy.MostDislikes"
+        [nzLabel]="SortBy.MostDislikes | translate"
+      ></nz-option>
+      <nz-option
+        [nzValue]="SortBy.NewestPosts"
+        [nzLabel]="SortBy.NewestPosts | translate"
+      ></nz-option>
+    </nz-select>
+  </div>
+
+  <app-post-comments
+    *ngIf="post && comments"
+    [comments]="comments"
+    [postId]="postId"
+  ></app-post-comments>
+</ng-container>

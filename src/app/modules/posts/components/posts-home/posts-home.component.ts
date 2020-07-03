@@ -4,7 +4,7 @@ import { Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { Post } from 'src/app/models/post.interface';
 import { getLanguage } from 'src/app/store/user/user.selectors';
-import { SortBy } from '../../models/sort-by.enum';
+import { SortBy } from '../../../../models/sort-by.enum';
 import {
   ChangePostsPageIndex,
   ChangePostsPageSize,
@@ -32,6 +32,8 @@ export class PostsHomeComponent implements OnInit, OnDestroy {
   pageSize$: Observable<number>;
   pageIndex$: Observable<number>;
 
+  loading = true;
+
   private subscription = new Subscription();
 
   constructor(private store: Store) {}
@@ -46,6 +48,9 @@ export class PostsHomeComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.store.select(getPostsOncurrentPage).subscribe(posts => {
         this.posts = posts;
+        if (posts && posts.length) {
+          this.loading = false;
+        }
       })
     );
 

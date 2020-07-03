@@ -1,10 +1,3 @@
-<app-comment-reply-to
-  class="db ph3-ns"
-  *ngIf="shouldShowReplyTo"
-  (saveComment)="saveComment($event)"
-  (cancel)="cancelComment.emit()"
-></app-comment-reply-to>
-
 <nz-comment
   *ngFor="let comment of comments"
   nzDatetime="{{ comment.createdAt | date: 'medium' }}"
@@ -44,12 +37,42 @@
     </button>
   </nz-comment-action>
 
-  <app-post-comments
-    *ngIf="comment.childComments || comment.shouldShowReplyTo"
-    [shouldShowReplyTo]="comment.shouldShowReplyTo"
-    [postId]="postId"
-    [comments]="comment.childComments"
+  <app-comment-reply-to
+    class="db ph3-ns"
+    *ngIf="comment.shouldShowReplyTo"
     [parentDocId]="comment.id"
-    (cancelComment)="hideReplyTo(comment)"
-  ></app-post-comments>
+    [postId]="postId"
+    (cancel)="hideReplyTo(comment)"
+  ></app-comment-reply-to>
+
+  <ng-container *ngIf="comment.childComments && comment.childComments.length">
+    <button
+      nz-button
+      nzType="link"
+      class="mb2"
+      (click)="toggleShowChildComments(comment)"
+    >
+      <span>
+        <ng-container *ngIf="comment.shouldShowChildComments">
+          <i nz-icon nzType="up" nzTheme="outline"></i>
+          {{ "COMMENTS.HIDE" | translate }}
+        </ng-container>
+        <ng-container *ngIf="!comment.shouldShowChildComments">
+          <i nz-icon nzType="down" nzTheme="outline"></i>
+          {{ "COMMENTS.VIEW" | translate }}
+        </ng-container>
+        {{
+          (comment.childComments.length === 1
+            ? "COMMENTS.REPLY"
+            : "COMMENTS.REPLIES"
+          ) | translate: { count: comment.childComments.length }
+        }}
+      </span>
+    </button>
+    <app-post-comments
+      *ngIf="comment.shouldShowChildComments"
+      [postId]="postId"
+      [comments]="comment.childComments"
+    ></app-post-comments>
+  </ng-container>
 </nz-comment>

@@ -24,8 +24,9 @@ import { firebaseConfig } from 'src/firebase.config';
 import { AntDesignModule } from './ant-design.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UserState } from './store/user/user.state';
 import { AppState } from './store/app.state';
+import { UserState } from './store/user/user.state';
+import { ModalService } from './shared/services/modal.service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -61,7 +62,7 @@ registerLocaleData(en);
     NgxsLoggerPluginModule.forRoot({ disabled: environment.production }),
     NgxsReduxDevtoolsPluginModule.forRoot({ disabled: environment.production })
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [{ provide: NZ_I18N, useValue: en_US }, ModalService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

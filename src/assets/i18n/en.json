@@ -8,13 +8,7 @@
     "TITLE": "Title",
     "MESSAGE": "Message",
     "SUBMIT": "Submit",
-    "CANCEL": "Cancel",
-    "CANCEL_MODAL": {
-      "TITLE": "Cancel Posting",
-      "CONTENT": "You got unsaved changes. Are you sure you want to cancel this post?",
-      "YES": "Yes, don't save.",
-      "NO": "No, continue editing."
-    }
+    "CANCEL": "Cancel"
   },
   "ERROR": {
     "REQUIRED": "Input is required",
@@ -31,5 +25,18 @@
   "MESSAGES": {
     "SUCCESS": "Saved successfully!",
     "FAILED": "Oops! Something went wrong~ Please try again."
+  },
+  "CANCEL_EDITING_MODAL": {
+    "TITLE": "Cancel Editing",
+    "CONTENT": "You got unsaved changes. Are you sure you want to cancel editing?",
+    "YES": "Yes, don't save.",
+    "NO": "No, continue editing."
+  },
+  "COMMENTS": {
+    "COMMENTS": "Comments",
+    "REPLY": "Reply",
+    "REPLIES": "{{ count }} Replies",
+    "VIEW": "View",
+    "HIDE": "Hide"
   }
 }

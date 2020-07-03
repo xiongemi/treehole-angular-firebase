@@ -7,5 +7,6 @@ export interface Comment {
   likesCount: number;
   dislikesCount: number;
   shouldShowReplyTo?: boolean;
+  shouldShowChildComments?: boolean;
   childComments?: Comment[];
 }
