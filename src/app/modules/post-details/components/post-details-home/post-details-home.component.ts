@@ -2,11 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { combineLatest, Subscription, merge } from 'rxjs';
+import { merge, Observable, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Post } from 'src/app/models/post.interface';
 import { SortBy } from 'src/app/models/sort-by.enum';
 import { DislikeAPost, LikeAPost } from 'src/app/store/user/user.actions';
+import {
+  getDoesUserDislike,
+  getDoesUserLike
+} from 'src/app/store/user/user.selectors';
 import { Comment } from '../../models/comment.interface';
 import { PostDetailsService } from '../../service/post-details.service';
 
@@ -24,6 +28,8 @@ export class PostDetailsHomeComponent implements OnInit, OnDestroy {
   shouldShowReplyTo = true;
   SortBy = SortBy;
   sortBy = new FormControl(SortBy.MostLikes);
+  doesUserLikePost$: Observable<boolean>;
+  doesUserDislikePost$: Observable<boolean>;
 
   private subscription = new Subscription();
 
@@ -63,6 +69,14 @@ export class PostDetailsHomeComponent implements OnInit, OnDestroy {
         )
         .subscribe(comments => (this.comments = comments))
     );
+
+    this.doesUserLikePost$ = postId$.pipe(
+      switchMap(postId => this.store.select(getDoesUserLike(postId)))
+    );
+
+    this.doesUserDislikePost$ = postId$.pipe(
+      switchMap(postId => this.store.select(getDoesUserDislike(postId)))
+    );
   }
 
   ngOnDestroy() {
@@ -79,9 +93,11 @@ export class PostDetailsHomeComponent implements OnInit, OnDestroy {
 
   like() {
     this.store.dispatch(new LikeAPost(this.postId));
+    this.post.likesCount++;
   }
 
   dislike() {
     this.store.dispatch(new DislikeAPost(this.postId));
+    this.post.dislikesCount++;
   }
 }

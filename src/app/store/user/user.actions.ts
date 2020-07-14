@@ -9,23 +9,31 @@ export class SetLanguage {
 export class LikeAPost {
   static readonly type = '[User] Like a Post';
 
-  constructor(public postId: string) {}
+  constructor(public docId: string) {}
 }
 
 export class UnlikeAPost {
   static readonly type = '[User] Unlike a Post';
 
-  constructor(public postId: string) {}
+  constructor(public docId: string) {}
 }
 
 export class DislikeAPost {
   static readonly type = '[User] Dislike a Post';
 
-  constructor(public postId: string) {}
+  constructor(public docId: string) {}
 }
 
 export class UndislikeAPost {
   static readonly type = '[User] Undislike a Post';
 
-  constructor(public postId: string) {}
+  constructor(public docId: string) {}
+}
+
+export class GetUserLikes {
+  static readonly type = '[User] Get User Likes';
+}
+
+export class GetUserDislikes {
+  static readonly type = '[User] Get User Dislikes';
 }

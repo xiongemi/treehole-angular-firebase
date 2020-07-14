@@ -4,7 +4,11 @@ import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 import { Language } from './models/language.type';
-import { SetLanguage } from './store/user/user.actions';
+import {
+  GetUserDislikes,
+  GetUserLikes,
+  SetLanguage
+} from './store/user/user.actions';
 import { getLanguage } from './store/user/user.selectors';
 
 @Component({
@@ -24,6 +28,8 @@ export class AppComponent implements OnInit {
     this.language$.pipe(first()).subscribe(language => {
       this.store.dispatch(new SetLanguage(language));
     });
+    this.store.dispatch(new GetUserLikes());
+    this.store.dispatch(new GetUserDislikes());
   }
 
   setLanguage(language: Language) {

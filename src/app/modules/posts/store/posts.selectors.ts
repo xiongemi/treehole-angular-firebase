@@ -2,7 +2,6 @@ import { createSelector } from '@ngxs/store';
 import { AppStateModel } from 'src/app/store/app-state-model.interface';
 
 import { Post } from 'src/app/models/post.interface';
-import { PostsState } from './posts.state';
 import { PostsStateModel } from './posts-state-model.interface';
 
 export const getPostsState = (appState: AppStateModel): PostsStateModel =>

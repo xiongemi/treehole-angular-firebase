@@ -3,5 +3,7 @@ import { UserStateModel } from './user-state-model.interface';
 
 export const initUserStateModel: UserStateModel = {
   language: 'en',
-  uuid: uuidv4()
+  uuid: uuidv4(),
+  likes: [],
+  dislikes: []
 };

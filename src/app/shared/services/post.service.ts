@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  DocumentData,
+  DocumentReference,
+  QuerySnapshot
+} from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { LikeResponse } from 'src/app/models/like-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +23,10 @@ export class PostService {
     );
   }
 
-  public uncheckLike(docId: string, uuid: string): Observable<any> {
+  public cancelLike(
+    docId: string,
+    uuid: string
+  ): Observable<QuerySnapshot<DocumentData>> {
     return this.firestore
       .collection('likes', ref =>
         ref.where('uuid', '==', uuid).where('docId', '==', docId)
@@ -40,7 +49,10 @@ export class PostService {
     );
   }
 
-  public uncheckDisike(docId: string, uuid: string): Observable<any> {
+  public cancelDislike(
+    docId: string,
+    uuid: string
+  ): Observable<QuerySnapshot<DocumentData>> {
     return this.firestore
       .collection('dislikes', ref =>
         ref.where('docId', '==', docId).where('uuid', '==', uuid)
@@ -53,5 +65,19 @@ export class PostService {
           });
         })
       );
+  }
+
+  public getUserLikes(uuid: string): Observable<LikeResponse[]> {
+    return this.firestore
+      .collection<LikeResponse>('likes', ref => ref.where('uuid', '==', uuid))
+      .valueChanges();
+  }
+
+  public getUserDislikes(uuid: string): Observable<LikeResponse[]> {
+    return this.firestore
+      .collection<LikeResponse>('dislikes', ref =>
+        ref.where('uuid', '==', uuid)
+      )
+      .valueChanges();
   }
 }

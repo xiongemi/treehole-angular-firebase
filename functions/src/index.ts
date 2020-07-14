@@ -8,8 +8,8 @@ const database = admin.firestore();
 const likesRef = database.collection('likes');
 const dislikesRef = database.collection('dislikes');
 
-function updateLikesDislikesCount(
-  collection: FirebaseFirestore.CollectionReference<
+function updateLikesDislikesCountOnPost(
+  collectionRef: FirebaseFirestore.CollectionReference<
     FirebaseFirestore.DocumentData
   >,
   snap: functions.firestore.QueryDocumentSnapshot,
@@ -21,7 +21,7 @@ function updateLikesDislikesCount(
 
   return database.runTransaction(transaction => {
     return transaction
-      .get(collection.where('docId', '==', data.docId))
+      .get(collectionRef.where('docId', '==', data.docId))
       .then(collectionQuery => {
         const count = collectionQuery.size;
         const updateValue: any = {};
@@ -32,24 +32,28 @@ function updateLikesDislikesCount(
   });
 }
 
-exports.likeAPost = functions.firestore
+exports.like = functions.firestore
   .document('likes/{likesId}')
-  .onCreate(snap => updateLikesDislikesCount(likesRef, snap, 'likesCount', 1));
-
-exports.unlikeAPost = functions.firestore
-  .document('likes/{likesId}')
-  .onDelete(snap => updateLikesDislikesCount(likesRef, snap, 'likesCount', -1));
-
-exports.dislikesCount = functions.firestore
-  .document('dislike/{dislikeId}')
-  .onCreate(snap =>
-    updateLikesDislikesCount(dislikesRef, snap, 'dislikesCount', 1)
+  .onDelete(snap =>
+    updateLikesDislikesCountOnPost(likesRef, snap, 'likesCount', -1)
   );
 
-exports.dislikesCount = functions.firestore
+exports.cancelLike = functions.firestore
+  .document('likes/{likesId}')
+  .onCreate(snap =>
+    updateLikesDislikesCountOnPost(likesRef, snap, 'likesCount', 1)
+  );
+
+exports.dislike = functions.firestore
+  .document('dislike/{dislikeId}')
+  .onCreate(snap =>
+    updateLikesDislikesCountOnPost(dislikesRef, snap, 'dislikesCount', 1)
+  );
+
+exports.cancelDislikes = functions.firestore
   .document('dislike/{dislikeId}')
   .onDelete(snap =>
-    updateLikesDislikesCount(dislikesRef, snap, 'dislikesCount', -1)
+    updateLikesDislikesCountOnPost(dislikesRef, snap, 'dislikesCount', -1)
   );
 
 exports.commentsCount = functions.firestore

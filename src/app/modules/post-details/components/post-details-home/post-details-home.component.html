@@ -14,13 +14,23 @@
 
 <ng-template #actionLike>
   <button nz-button nzType="link" class="w-100" (click)="like()">
-    <i nz-icon nzType="like"></i> {{ post?.likesCount }}
+    <i
+      nz-icon
+      nzType="like"
+      [nzTheme]="(doesUserLikePost$ | async) ? 'fill' : 'outline'"
+    ></i>
+    {{ post?.likesCount }}
   </button>
 </ng-template>
 
 <ng-template #actionDislike>
   <button nz-button nzType="link" class="w-100" (click)="dislike()">
-    <i nz-icon nzType="dislike"></i> {{ post?.dislikesCount }}
+    <i
+      nz-icon
+      nzType="dislike"
+      [nzTheme]="(doesUserDislikePost$ | async) ? 'fill' : 'outline'"
+    ></i>
+    {{ post?.dislikesCount }}
   </button>
 </ng-template>
 
