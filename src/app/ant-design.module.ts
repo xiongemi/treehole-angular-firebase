@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzBackTopModule } from 'ng-zorro-antd/back-top';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -38,7 +39,8 @@ const modules = [
   NzPaginationModule,
   NzCommentModule,
   NzBackTopModule,
-  NzDividerModule
+  NzDividerModule,
+  NzAlertModule
 ];
 
 @NgModule({

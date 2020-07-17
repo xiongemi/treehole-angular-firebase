@@ -6,7 +6,8 @@ import {
   QuerySnapshot
 } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
+import { LikeRequest } from 'src/app/models/like-request.interface';
 import { LikeResponse } from 'src/app/models/like-response.interface';
 
 @Injectable({
@@ -15,48 +16,33 @@ import { LikeResponse } from 'src/app/models/like-response.interface';
 export class PostService {
   constructor(private firestore: AngularFirestore) {}
 
-  public like(docId: string, uuid: string): Observable<DocumentReference> {
+  public addLikeDislike(
+    collectionName: 'likes' | 'dislikes',
+    uuid: string,
+    postId: string,
+    commentId?: string
+  ): Observable<DocumentReference> {
+    const request: LikeRequest = {
+      uuid,
+      createdAt: new Date(),
+      parentDocId: commentId || postId
+    };
+
     return from(
-      this.firestore
-        .collection('likes')
-        .add({ uuid, createdAt: new Date(), docId })
+      this.getParentDocRef(postId, commentId)
+        .collection(collectionName)
+        .add(request)
     );
   }
 
-  public cancelLike(
-    docId: string,
-    uuid: string
+  public cancelLikeDislike(
+    collectionName: 'likes' | 'dislikes',
+    uuid: string,
+    postId: string,
+    commentId?: string
   ): Observable<QuerySnapshot<DocumentData>> {
-    return this.firestore
-      .collection('likes', ref =>
-        ref.where('uuid', '==', uuid).where('docId', '==', docId)
-      )
-      .get()
-      .pipe(
-        tap(querySnapshot => {
-          querySnapshot.docs.map(doc => {
-            return doc.ref.delete();
-          });
-        })
-      );
-  }
-
-  public dislike(docId: string, uuid: string): Observable<DocumentReference> {
-    return from(
-      this.firestore
-        .collection('dislikes')
-        .add({ uuid, createdAt: new Date(), docId })
-    );
-  }
-
-  public cancelDislike(
-    docId: string,
-    uuid: string
-  ): Observable<QuerySnapshot<DocumentData>> {
-    return this.firestore
-      .collection('dislikes', ref =>
-        ref.where('docId', '==', docId).where('uuid', '==', uuid)
-      )
+    return this.getParentDocRef(postId, commentId)
+      .collection(collectionName, ref => ref.where('uuid', '==', uuid))
       .get()
       .pipe(
         tap(querySnapshot => {
@@ -69,15 +55,25 @@ export class PostService {
 
   public getUserLikes(uuid: string): Observable<LikeResponse[]> {
     return this.firestore
-      .collection<LikeResponse>('likes', ref => ref.where('uuid', '==', uuid))
+      .collectionGroup<LikeResponse>('likes', ref =>
+        ref.where('uuid', '==', uuid)
+      )
       .valueChanges();
   }
 
   public getUserDislikes(uuid: string): Observable<LikeResponse[]> {
     return this.firestore
-      .collection<LikeResponse>('dislikes', ref =>
+      .collectionGroup<LikeResponse>('dislikes', ref =>
         ref.where('uuid', '==', uuid)
       )
       .valueChanges();
+  }
+
+  private getParentDocRef(postId: string, commentId?: string) {
+    let parentDocRef = this.firestore.collection('posts').doc(postId);
+    if (commentId) {
+      parentDocRef = parentDocRef.collection('comments').doc(commentId);
+    }
+    return parentDocRef;
   }
 }

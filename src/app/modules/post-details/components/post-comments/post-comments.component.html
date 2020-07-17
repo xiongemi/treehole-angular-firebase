@@ -8,26 +8,32 @@
     </p>
   </nz-comment-content>
   <nz-comment-action>
-    <i
-      nz-tooltip
-      nzTitle="Like"
-      nz-icon
-      nzType="like"
-      [nzTheme]="comment.likesCount > 0 ? 'twotone' : 'outline'"
-      (click)="like()"
-    ></i>
-    <span class="count like">{{ comment.likesCount }}</span>
+    <button nz-button nzType="link" (click)="like(comment.id)">
+      <i
+        nz-tooltip
+        nzTitle="Like"
+        nz-icon
+        nzType="like"
+        [nzTheme]="
+          (doesUserLikesComment$(comment.id) | async) ? 'fill' : 'outline'
+        "
+      ></i>
+      <span class="count like">{{ comment.likesCount }}</span>
+    </button>
   </nz-comment-action>
   <nz-comment-action>
-    <i
-      nz-tooltip
-      nzTitle="Dislike"
-      nz-icon
-      nzType="dislike"
-      [nzTheme]="comment.dislikesCount > 0 ? 'twotone' : 'outline'"
-      (click)="dislike()"
-    ></i>
-    <span class="count dislike">{{ comment.dislikesCount }}</span>
+    <button nz-button nzType="link" (click)="dislike(comment.id)">
+      <i
+        nz-tooltip
+        nzTitle="Dislike"
+        nz-icon
+        nzType="dislike"
+        [nzTheme]="
+          (doesUserDislikesComment$(comment.id) | async) ? 'fill' : 'outline'
+        "
+      ></i>
+      <span class="count dislike">{{ comment.dislikesCount }}</span>
+    </button>
   </nz-comment-action>
 
   <nz-comment-action>
@@ -40,9 +46,9 @@
   <app-comment-reply-to
     class="db ph3-ns"
     *ngIf="comment.shouldShowReplyTo"
-    [parentDocId]="comment.id"
-    [postId]="postId"
     (cancel)="hideReplyTo(comment)"
+    (saveComment)="saveComment($event, comment.id)"
+    [@inOut]
   ></app-comment-reply-to>
 
   <ng-container *ngIf="comment.childComments && comment.childComments.length">
@@ -70,6 +76,7 @@
       </span>
     </button>
     <app-post-comments
+      [@inOut]
       *ngIf="comment.shouldShowChildComments"
       [postId]="postId"
       [comments]="comment.childComments"

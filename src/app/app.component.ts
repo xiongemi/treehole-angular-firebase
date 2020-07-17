@@ -4,12 +4,15 @@ import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 import { Language } from './models/language.type';
+import { SetLanguage } from './store/settings/settings.actions';
+import { getLanguage, getUuid } from './store/settings/settings.selectors';
 import {
   GetUserDislikes,
   GetUserLikes,
-  SetLanguage
+  HandleOffline,
+  HandleOnline
 } from './store/user/user.actions';
-import { getLanguage } from './store/user/user.selectors';
+import { getIsOnline } from './store/user/user.selectors';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +21,7 @@ import { getLanguage } from './store/user/user.selectors';
 })
 export class AppComponent implements OnInit {
   language$: Observable<Language>;
+  isOnline$: Observable<boolean>;
 
   today = Date.now();
 
@@ -25,11 +29,27 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.language$ = this.store.select(getLanguage);
+    this.isOnline$ = this.store.select(getIsOnline);
+
+    this.isOnline$.subscribe(test => {
+      console.log(test);
+    });
+
     this.language$.pipe(first()).subscribe(language => {
       this.store.dispatch(new SetLanguage(language));
     });
-    this.store.dispatch(new GetUserLikes());
-    this.store.dispatch(new GetUserDislikes());
+
+    this.store.selectOnce(getUuid).subscribe(uuid => {
+      this.store.dispatch(new GetUserLikes(uuid));
+      this.store.dispatch(new GetUserDislikes(uuid));
+    });
+
+    window.addEventListener('offline', () => {
+      this.store.dispatch(new HandleOffline());
+    });
+    window.addEventListener('online', () => {
+      this.store.dispatch(new HandleOnline());
+    });
   }
 
   setLanguage(language: Language) {

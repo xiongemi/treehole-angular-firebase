@@ -5,56 +5,62 @@ admin.initializeApp();
 
 const database = admin.firestore();
 
-const likesRef = database.collection('likes');
-const dislikesRef = database.collection('dislikes');
-
 function updateLikesDislikesCountOnPost(
-  collectionRef: FirebaseFirestore.CollectionReference<
+  parentDocRef: FirebaseFirestore.DocumentReference<
     FirebaseFirestore.DocumentData
   >,
-  snap: functions.firestore.QueryDocumentSnapshot,
-  keyToUpdate: string,
-  incrementValue: number
+  collectionName: 'likes' | 'dislikes'
 ) {
-  const data = snap.data();
-  const postRef = database.collection('posts').doc(data.parentDocId);
-
+  functions.logger.info(collectionName, parentDocRef);
   return database.runTransaction(transaction => {
     return transaction
-      .get(collectionRef.where('docId', '==', data.docId))
+      .get(parentDocRef.collection(collectionName))
       .then(collectionQuery => {
         const count = collectionQuery.size;
         const updateValue: any = {};
-        updateValue[keyToUpdate] = count + incrementValue;
+        updateValue[collectionName + 'Count'] = count;
+        functions.logger.info(collectionName, updateValue, parentDocRef);
 
-        return transaction.update(postRef, updateValue);
+        return transaction.update(parentDocRef, updateValue);
       });
   });
 }
 
-exports.like = functions.firestore
-  .document('likes/{likesId}')
-  .onDelete(snap =>
-    updateLikesDislikesCountOnPost(likesRef, snap, 'likesCount', -1)
-  );
+exports.likeAPost = functions.firestore
+  .document('posts/{postId}/likes/{likesId}')
+  .onWrite((_, context) => {
+    const postRef = database.collection('posts').doc(context.params.postId);
+    return updateLikesDislikesCountOnPost(postRef, 'likes');
+  });
 
-exports.cancelLike = functions.firestore
-  .document('likes/{likesId}')
-  .onCreate(snap =>
-    updateLikesDislikesCountOnPost(likesRef, snap, 'likesCount', 1)
-  );
+exports.dislikeAPost = functions.firestore
+  .document('posts/{postId}/dislikes/{dislikeId}')
+  .onWrite((_, context) => {
+    const postRef = database.collection('posts').doc(context.params.postId);
+    return updateLikesDislikesCountOnPost(postRef, 'dislikes');
+  });
 
-exports.dislike = functions.firestore
-  .document('dislike/{dislikeId}')
-  .onCreate(snap =>
-    updateLikesDislikesCountOnPost(dislikesRef, snap, 'dislikesCount', 1)
-  );
+exports.likeAComment = functions.firestore
+  .document('posts/{postId}/comments/{commentId}/likes/{likesId}')
+  .onWrite((_, context) => {
+    const commentRef = database
+      .collection('posts')
+      .doc(context.params.postId)
+      .collection('comments')
+      .doc(context.params.commentId);
+    return updateLikesDislikesCountOnPost(commentRef, 'likes');
+  });
 
-exports.cancelDislikes = functions.firestore
-  .document('dislike/{dislikeId}')
-  .onDelete(snap =>
-    updateLikesDislikesCountOnPost(dislikesRef, snap, 'dislikesCount', -1)
-  );
+exports.dislikeAComment = functions.firestore
+  .document('posts/{postId}/comments/{commentId}/dislikes/{dislikeId}')
+  .onWrite((_, context) => {
+    const commentRef = database
+      .collection('posts')
+      .doc(context.params.postId)
+      .collection('comments')
+      .doc(context.params.commentId);
+    return updateLikesDislikesCountOnPost(commentRef, 'dislikes');
+  });
 
 exports.commentsCount = functions.firestore
   .document('posts/{postId}/comments/{commentsId}')
@@ -71,8 +77,7 @@ exports.commentsCount = functions.firestore
         .get(commentsRef.where('parentDocId', '==', context.params.postId))
         .then(query => {
           const count = query.size;
-          const updateValue: any = { commentsCount: count + 1 };
-          return transaction.update(postRef, updateValue);
+          return transaction.update(postRef, { commentsCount: count });
         });
     });
   });

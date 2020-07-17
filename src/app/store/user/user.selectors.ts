@@ -4,11 +4,6 @@ import { AppStateModel } from '../app-state-model.interface';
 
 export const getUserState = (appState: AppStateModel) => appState.user;
 
-export const getLanguage = (appState: AppStateModel) =>
-  getUserState(appState).language;
-
-export const getUuid = (appState: AppStateModel) => getUserState(appState).uuid;
-
 export const getUserLikes = (appState: AppStateModel) =>
   getUserState(appState).likes;
 
@@ -20,7 +15,7 @@ export const getDoesUserLike = (docId: string) =>
     if (!docId) {
       return false;
     }
-    return !!likes.some(like => like.docId === docId);
+    return !!likes.some(like => like.parentDocId === docId);
   });
 
 export const getDoesUserDislike = (docId: string) =>
@@ -28,5 +23,8 @@ export const getDoesUserDislike = (docId: string) =>
     if (!docId) {
       return false;
     }
-    return !!dislikes.some(like => like.docId === docId);
+    return !!dislikes.some(like => like.parentDocId === docId);
   });
+
+export const getIsOnline = (appState: AppStateModel): boolean =>
+  getUserState(appState).isOnline;

@@ -3,10 +3,16 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { merge, Observable, Subscription } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { first, map, switchMap, filter } from 'rxjs/operators';
 import { Post } from 'src/app/models/post.interface';
 import { SortBy } from 'src/app/models/sort-by.enum';
-import { DislikeAPost, LikeAPost } from 'src/app/store/user/user.actions';
+import { getUuid } from 'src/app/store/settings/settings.selectors';
+import {
+  CancelDislikeAPostComment,
+  CancelLikeAPostComment,
+  DislikeAPostComment,
+  LikeAPostComment
+} from 'src/app/store/user/user.actions';
 import {
   getDoesUserDislike,
   getDoesUserLike
@@ -92,12 +98,57 @@ export class PostDetailsHomeComponent implements OnInit, OnDestroy {
   }
 
   like() {
-    this.store.dispatch(new LikeAPost(this.postId));
-    this.post.likesCount++;
+    const uuid = this.store.selectSnapshot(getUuid);
+    this.doesUserLikePost$.pipe(first()).subscribe((userLikes: boolean) => {
+      if (userLikes) {
+        this.store.dispatch(new CancelLikeAPostComment(uuid, this.postId));
+        this.post.likesCount--;
+      } else {
+        this.store.dispatch(new LikeAPostComment(uuid, this.postId));
+        this.post.likesCount++;
+
+        this.doesUserDislikePost$
+          .pipe(first(), filter(Boolean))
+          .subscribe(() => {
+            this.store.dispatch(
+              new CancelDislikeAPostComment(uuid, this.postId)
+            );
+          });
+      }
+    });
   }
 
   dislike() {
-    this.store.dispatch(new DislikeAPost(this.postId));
-    this.post.dislikesCount++;
+    const uuid = this.store.selectSnapshot(getUuid);
+    this.doesUserDislikePost$
+      .pipe(first())
+      .subscribe((userDislikes: boolean) => {
+        if (userDislikes) {
+          this.store.dispatch(new CancelDislikeAPostComment(uuid, this.postId));
+          this.post.dislikesCount--;
+        } else {
+          this.store.dispatch(new DislikeAPostComment(uuid, this.postId));
+          this.post.dislikesCount++;
+
+          this.doesUserLikePost$
+            .pipe(first(), filter(Boolean))
+            .subscribe(() => {
+              this.store.dispatch(
+                new CancelLikeAPostComment(uuid, this.postId)
+              );
+            });
+        }
+      });
+  }
+
+  saveComment(comment: string) {
+    this.postDetailsService
+      .saveComment(
+        comment,
+        this.store.selectSnapshot(getUuid),
+        this.postId,
+        this.postId
+      )
+      .subscribe();
   }
 }

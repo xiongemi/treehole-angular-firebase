@@ -44,9 +44,8 @@
 <app-comment-reply-to
   *ngIf="shouldShowReplyTo"
   class="db ph3 pt3 pb1"
-  [parentDocId]="postId"
-  [postId]="postId"
   (cancel)="hideReplyTo()"
+  (saveComment)="saveComment($event)"
 ></app-comment-reply-to>
 
 <ng-container *ngIf="comments && comments.length">

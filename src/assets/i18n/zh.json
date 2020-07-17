@@ -3,6 +3,8 @@
   "SUBTITLE": "匿名讨论区",
   "LANGUAGE": "语言",
   "ADD_YOUR_POST": "发帖",
+  "REPLY": "回复",
+  "OFFLINE": "连不上网络",
   "ADD": {
     "TITLE": "标题",
     "MESSAGE": "内容",
@@ -33,8 +35,8 @@
   },
   "COMMENTS": {
     "COMMENTS": "留言",
-    "REPLY": "回复",
-    "REPLIES": "回复",
+    "REPLY": "{{ count }} 回复",
+    "REPLIES": "{{ count }} 回复",
     "VIEW": "查看",
     "HIDE": "收起"
   }

@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { Post } from 'src/app/models/post.interface';
-import { getLanguage } from 'src/app/store/user/user.selectors';
+import { getLanguage } from 'src/app/store/settings/settings.selectors';
 import { SortBy } from '../../../../models/sort-by.enum';
 import {
   ChangePostsPageIndex,

@@ -4,11 +4,14 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { filter } from 'rxjs/operators';
 
-import { ModalService } from 'src/app/shared/services/modal.service';
-import { HandleApiFailure, HandleApiSuccess } from 'src/app/store/app.actions';
-import { getLanguage, getUuid } from 'src/app/store/user/user.selectors';
-import { SaveAddedPost } from '../store/add-post.actions';
 import { markFormDeepDirty } from 'src/app/shared/services/form.service';
+import { ModalService } from 'src/app/shared/services/modal.service';
+import { HandleApiSuccess } from 'src/app/store/app.actions';
+import {
+  getLanguage,
+  getUuid
+} from 'src/app/store/settings/settings.selectors';
+import { SaveAddedPost } from '../store/add-post.actions';
 
 @Component({
   selector: 'app-add-post-home',

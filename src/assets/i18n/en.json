@@ -4,6 +4,7 @@
   "LANGUAGE": "Language",
   "ADD_YOUR_POST": "Post",
   "REPLY": "Reply",
+  "OFFLINE": "Oops! Unable to connect to the interet.",
   "ADD": {
     "TITLE": "Title",
     "MESSAGE": "Message",
@@ -34,7 +35,7 @@
   },
   "COMMENTS": {
     "COMMENTS": "Comments",
-    "REPLY": "Reply",
+    "REPLY": "{{ count }} Reply",
     "REPLIES": "{{ count }} Replies",
     "VIEW": "View",
     "HIDE": "Hide"

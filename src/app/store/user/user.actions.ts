@@ -1,39 +1,59 @@
-import { Language } from 'src/app/models/language.type';
+export class LikeAPostComment {
+  static readonly type = '[User] Like a Post / Comment';
 
-export class SetLanguage {
-  static readonly type = '[User] Set Language';
-
-  constructor(public language: Language) {}
+  constructor(
+    public uuid: string,
+    public postId: string,
+    public commentId?: string
+  ) {}
 }
 
-export class LikeAPost {
-  static readonly type = '[User] Like a Post';
+export class CancelLikeAPostComment {
+  static readonly type = '[User] Cancel Like a Post / Comment';
 
-  constructor(public docId: string) {}
+  constructor(
+    public uuid: string,
+    public postId: string,
+    public commentId?: string
+  ) {}
 }
 
-export class UnlikeAPost {
-  static readonly type = '[User] Unlike a Post';
+export class DislikeAPostComment {
+  static readonly type = '[User] Dislike a Post / Comment';
 
-  constructor(public docId: string) {}
+  constructor(
+    public uuid: string,
+    public postId: string,
+    public commentId?: string
+  ) {}
 }
 
-export class DislikeAPost {
-  static readonly type = '[User] Dislike a Post';
+export class CancelDislikeAPostComment {
+  static readonly type = '[User] Cancel Dislike a Post / Comment';
 
-  constructor(public docId: string) {}
-}
-
-export class UndislikeAPost {
-  static readonly type = '[User] Undislike a Post';
-
-  constructor(public docId: string) {}
+  constructor(
+    public uuid: string,
+    public postId: string,
+    public commentId?: string
+  ) {}
 }
 
 export class GetUserLikes {
   static readonly type = '[User] Get User Likes';
+
+  constructor(public uuid: string) {}
 }
 
 export class GetUserDislikes {
   static readonly type = '[User] Get User Dislikes';
+
+  constructor(public uuid: string) {}
+}
+
+export class HandleOnline {
+  static readonly type = '[App] Handle Online';
+}
+
+export class HandleOffline {
+  static readonly type = '[App] Handle Offline';
 }

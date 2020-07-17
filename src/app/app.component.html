@@ -1,5 +1,10 @@
 <nz-back-top></nz-back-top>
-
+<nz-alert
+  nzType="error"
+  [nzMessage]="'OFFLINE' | translate"
+  nzShowIcon
+  *ngIf="!(isOnline$ | async)"
+></nz-alert>
 <nz-layout class="min-vh-100 ph7-l ph4-m">
   <nz-page-header>
     <nz-page-header-title>
@@ -44,7 +49,7 @@
       </nz-dropdown-menu>
     </nz-page-header-extra>
   </nz-page-header>
-  <nz-content #header>
+  <nz-content>
     <router-outlet></router-outlet>
   </nz-content>
   <nz-footer>

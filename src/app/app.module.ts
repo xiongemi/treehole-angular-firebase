@@ -27,6 +27,7 @@ import { AppComponent } from './app.component';
 import { AppState } from './store/app.state';
 import { UserState } from './store/user/user.state';
 import { ModalService } from './shared/services/modal.service';
+import { SettingsState } from './store/settings/settings.state';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -53,11 +54,11 @@ registerLocaleData(en);
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
     AntDesignModule,
-    NgxsModule.forRoot([AppState, UserState], {
+    NgxsModule.forRoot([AppState, SettingsState, UserState], {
       developmentMode: !environment.production
     }),
     NgxsFormPluginModule.forRoot(),
-    NgxsStoragePluginModule.forRoot({ key: 'user' }),
+    NgxsStoragePluginModule.forRoot({ key: 'settings' }),
     NgxsResetPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot({ disabled: environment.production }),
     NgxsReduxDevtoolsPluginModule.forRoot({ disabled: environment.production })
