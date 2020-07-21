@@ -27,6 +27,7 @@
     "@ngxs/logger-plugin": "^3.6.2",
     "@ngxs/storage-plugin": "^3.6.2",
     "@ngxs/store": "^3.6.2",
+    "angular-cli-ghpages": "^0.6.2",
     "firebase": "^7.14.6",
     "firebase-admin": "^8.12.1",
     "firebase-functions": "^3.6.2",
