@@ -1,9 +1,11 @@
+import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   DetachedRouteHandle,
   RouteReuseStrategy
 } from '@angular/router';
 
+@Injectable()
 export class RouteReuseService implements RouteReuseStrategy {
   private storedRoutes = new Map<string, DetachedRouteHandle>();
 

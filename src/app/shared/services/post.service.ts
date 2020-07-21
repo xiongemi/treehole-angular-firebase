@@ -6,7 +6,7 @@ import {
   QuerySnapshot
 } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { LikeRequest } from 'src/app/models/like-request.interface';
 import { LikeResponse } from 'src/app/models/like-response.interface';
 
