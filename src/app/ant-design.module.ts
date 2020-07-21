@@ -17,6 +17,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
@@ -40,7 +41,8 @@ const modules = [
   NzCommentModule,
   NzBackTopModule,
   NzDividerModule,
-  NzAlertModule
+  NzAlertModule,
+  NzResultModule
 ];
 
 @NgModule({

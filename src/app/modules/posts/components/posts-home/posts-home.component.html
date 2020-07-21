@@ -1,4 +1,4 @@
-<form [formGroup]="searchForm" class="mb3" *ngIf="!loading">
+<form [formGroup]="searchForm" class="mb3" *ngIf="!loading && !hasError">
   <nz-select formControlName="sortBy">
     <nz-option
       [nzValue]="SortBy.NewestPosts"
@@ -67,3 +67,15 @@
     (nzPageIndexChange)="onPageIndexChange($event)"
   ></nz-pagination>
 </div>
+
+<nz-result
+  *ngIf="!loading && hasError"
+  nzStatus="warning"
+  [nzTitle]="'MESSAGES.FAILED' | translate"
+>
+  <div nz-result-extra>
+    <button nz-button nzType="primary" (click)="getPosts()">
+      {{ "RETRY" | translate }}
+    </button>
+  </div>
+</nz-result>

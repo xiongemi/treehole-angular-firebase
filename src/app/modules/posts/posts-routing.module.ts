@@ -6,7 +6,8 @@ import { PostsHomeComponent } from './components/posts-home/posts-home.component
 const routes: Routes = [
   {
     path: '',
-    component: PostsHomeComponent
+    component: PostsHomeComponent,
+    data: { reuse: true }
   }
 ];
 

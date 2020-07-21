@@ -1,4 +1,5 @@
 <nz-card
+  *ngIf="!hasError"
   class="w-100"
   [nzLoading]="!post"
   [nzTitle]="post?.title"
@@ -41,14 +42,26 @@
   </button>
 </ng-template>
 
+<nz-result
+  *ngIf="!post && hasError"
+  nzStatus="warning"
+  [nzTitle]="'MESSAGES.FAILED' | translate"
+>
+  <div nz-result-extra>
+    <button nz-button nzType="primary" (click)="getPostDetails()">
+      {{ "RETRY" | translate }}
+    </button>
+  </div>
+</nz-result>
+
 <app-comment-reply-to
-  *ngIf="shouldShowReplyTo"
+  *ngIf="shouldShowReplyTo && !hasError"
   class="db ph3 pt3 pb1"
   (cancel)="hideReplyTo()"
-  (saveComment)="saveComment($event)"
+  (saveComment)="saveComment($event, postId)"
 ></app-comment-reply-to>
 
-<ng-container *ngIf="comments && comments.length">
+<ng-container *ngIf="comments && comments.length && !hasError">
   <nz-divider [nzText]="'COMMENTS.COMMENTS' | translate"></nz-divider>
 
   <div class="ph3 flex justify-between">
@@ -77,5 +90,6 @@
     *ngIf="post && comments"
     [comments]="comments"
     [postId]="postId"
+    (saveComment)="saveComment($event.comment, $event.parentDocId)"
   ></app-post-comments>
 </ng-container>

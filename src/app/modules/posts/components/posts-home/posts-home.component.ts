@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Store } from '@ngxs/store';
+import { Actions, ofActionDispatched, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { Post } from 'src/app/models/post.interface';
+import { SetLanguage } from 'src/app/store/settings/settings.actions';
 import { getLanguage } from 'src/app/store/settings/settings.selectors';
 import { SortBy } from '../../../../models/sort-by.enum';
 import {
@@ -33,32 +34,30 @@ export class PostsHomeComponent implements OnInit, OnDestroy {
   pageIndex$: Observable<number>;
 
   loading = true;
+  hasError = false;
 
   private subscription = new Subscription();
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private actions: Actions) {}
 
   ngOnInit() {
-    this.store.dispatch(
-      new GetPosts(
-        this.store.selectSnapshot(getLanguage),
-        this.searchForm.value.sortBy
-      )
-    );
+    this.getPosts();
+
     this.subscription.add(
-      this.store.select(getPostsOncurrentPage).subscribe(posts => {
-        this.posts = posts;
-        if (posts && posts.length) {
-          this.loading = false;
-        }
+      this.actions.pipe(ofActionDispatched(SetLanguage)).subscribe(() => {
+        this.getPosts();
       })
     );
 
     this.subscription.add(
-      this.searchForm.get('sortBy').valueChanges.subscribe((sortBy: SortBy) => {
-        this.store.dispatch(
-          new GetPosts(this.store.selectSnapshot(getLanguage), sortBy)
-        );
+      this.searchForm.get('sortBy').valueChanges.subscribe(() => {
+        this.getPosts();
+      })
+    );
+
+    this.subscription.add(
+      this.store.select(getPostsOncurrentPage).subscribe(posts => {
+        this.posts = posts;
       })
     );
 
@@ -69,6 +68,26 @@ export class PostsHomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  getPosts() {
+    this.store
+      .dispatch(
+        new GetPosts(
+          this.store.selectSnapshot(getLanguage),
+          this.searchForm.value.sortBy
+        )
+      )
+      .subscribe(
+        () => {
+          this.loading = false;
+          this.hasError = false;
+        },
+        () => {
+          this.loading = false;
+          this.hasError = true;
+        }
+      );
   }
 
   onPageIndexChange(pageIndex: number) {

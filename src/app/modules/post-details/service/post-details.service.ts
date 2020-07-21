@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
-  Action,
   AngularFirestore,
-  DocumentChangeAction,
+  CollectionReference,
+  DocumentData,
   DocumentReference,
   DocumentSnapshot,
-  CollectionReference
+  QuerySnapshot
 } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -30,11 +30,11 @@ export class PostDetailsService {
     return this.firestore
       .collection('posts')
       .doc(postId)
-      .snapshotChanges()
+      .get()
       .pipe(
-        map((doc: Action<DocumentSnapshot<PostResponse>>) => {
-          const post = transformPostResponseToPost(doc.payload.data());
-          post.id = doc.payload.id;
+        map((doc: DocumentSnapshot<DocumentData>) => {
+          const post = transformPostResponseToPost(doc.data() as PostResponse);
+          post.id = doc.id;
           return post;
         })
       );
@@ -71,14 +71,14 @@ export class PostDetailsService {
       .collection('comments', (ref: CollectionReference) =>
         ref.orderBy(orderByField, orderByDirection)
       )
-      .snapshotChanges()
+      .get()
       .pipe(
-        map((docs: DocumentChangeAction<CommentResponse>[]) => {
-          const comments = docs.map(doc => {
+        map((query: QuerySnapshot<DocumentData>) => {
+          const comments = query.docs.map(doc => {
             const comment = transformCommentResponoseToComment(
-              doc.payload.doc.data()
+              doc.data() as CommentResponse
             );
-            comment.id = doc.payload.doc.id;
+            comment.id = doc.id;
             return comment;
           });
           return buildCommentsToTree(comments, postId);

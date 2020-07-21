@@ -11,7 +11,6 @@ import {
   ChangePostsPageSize,
   GetPosts
 } from './posts.actions';
-import { reuqestTimeout } from 'src/app/models/timeout.const';
 
 @State<PostsStateModel>({
   name: 'posts',
@@ -28,6 +27,9 @@ export class PostsState {
     ctx.patchState({ posts: null });
     return this.postsSerivce.getPosts(action.language, action.sortBy).pipe(
       tap(posts => {
+        if (!posts || !posts.length) {
+          throw posts;
+        }
         ctx.patchState({ posts });
       }),
       catchError(error => {

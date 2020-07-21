@@ -31,10 +31,6 @@ export class AppComponent implements OnInit {
     this.language$ = this.store.select(getLanguage);
     this.isOnline$ = this.store.select(getIsOnline);
 
-    this.isOnline$.subscribe(test => {
-      console.log(test);
-    });
-
     this.language$.pipe(first()).subscribe(language => {
       this.store.dispatch(new SetLanguage(language));
     });

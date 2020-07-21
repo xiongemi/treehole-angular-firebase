@@ -58,7 +58,14 @@ export class PostService {
       .collectionGroup<LikeResponse>('likes', ref =>
         ref.where('uuid', '==', uuid)
       )
-      .valueChanges();
+      .get()
+      .pipe(
+        map((query: QuerySnapshot<DocumentData>) => {
+          return query.docs.map(doc => {
+            return doc.data() as LikeResponse;
+          });
+        })
+      );
   }
 
   public getUserDislikes(uuid: string): Observable<LikeResponse[]> {
@@ -66,7 +73,14 @@ export class PostService {
       .collectionGroup<LikeResponse>('dislikes', ref =>
         ref.where('uuid', '==', uuid)
       )
-      .valueChanges();
+      .get()
+      .pipe(
+        map((query: QuerySnapshot<DocumentData>) => {
+          return query.docs.map(doc => {
+            return doc.data() as LikeResponse;
+          });
+        })
+      );
   }
 
   private getParentDocRef(postId: string, commentId?: string) {

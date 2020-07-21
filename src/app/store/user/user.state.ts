@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { Action, State, StateContext } from '@ngxs/store';
-
-import { catchError, tap, timeout } from 'rxjs/operators';
-import { reuqestTimeout } from 'src/app/models/timeout.const';
+import { catchError, tap } from 'rxjs/operators';
 import { PostService } from 'src/app/shared/services/post.service';
 import { HandleApiFailure } from '../app.actions';
 import { initUserStateModel } from './user-state-model-init.const';
@@ -27,30 +24,45 @@ import {
 })
 @Injectable()
 export class UserState {
-  constructor(
-    private translateService: TranslateService,
-    private postService: PostService
-  ) {}
+  constructor(private postService: PostService) {}
 
   @Action(LikeAPostComment)
   likeAPost(ctx: StateContext<UserStateModel>, action: LikeAPostComment) {
-    return this.postService.addLikeDislike(
-      'likes',
-      action.uuid,
-      action.postId,
-      action.commentId
-    );
+    return this.postService
+      .addLikeDislike('likes', action.uuid, action.postId, action.commentId)
+      .pipe(
+        tap(() => {
+          let likes = ctx.getState().likes;
+          likes = likes.concat([
+            {
+              uuid: action.uuid,
+              parentDocId: action.commentId || action.postId
+            }
+          ]);
+          ctx.patchState({ likes });
+        }),
+        catchError(error => {
+          ctx.dispatch(new HandleApiFailure());
+          throw error;
+        })
+      );
   }
 
   @Action(CancelLikeAPostComment)
-  undislikeAPost(
+  cancelLikeAPost(
     ctx: StateContext<UserStateModel>,
     action: CancelLikeAPostComment
   ) {
     return this.postService
       .cancelLikeDislike('likes', action.uuid, action.postId, action.commentId)
       .pipe(
-        timeout(reuqestTimeout),
+        tap(() => {
+          let likes = ctx.getState().likes;
+          likes = likes.filter(
+            like => like.parentDocId !== (action.commentId || action.postId)
+          );
+          ctx.patchState({ likes });
+        }),
         catchError(error => {
           ctx.dispatch(new HandleApiFailure());
           throw error;
@@ -59,11 +71,23 @@ export class UserState {
   }
 
   @Action(DislikeAPostComment)
-  unlikeAPost(ctx: StateContext<UserStateModel>, action: DislikeAPostComment) {
+  dislikeAPostComment(
+    ctx: StateContext<UserStateModel>,
+    action: DislikeAPostComment
+  ) {
     return this.postService
       .addLikeDislike('dislikes', action.uuid, action.postId, action.commentId)
       .pipe(
-        timeout(reuqestTimeout),
+        tap(() => {
+          let dislikes = ctx.getState().dislikes;
+          dislikes = dislikes.concat([
+            {
+              uuid: action.uuid,
+              parentDocId: action.commentId || action.postId
+            }
+          ]);
+          ctx.patchState({ dislikes });
+        }),
         catchError(error => {
           ctx.dispatch(new HandleApiFailure());
           throw error;
@@ -84,7 +108,14 @@ export class UserState {
         action.commentId
       )
       .pipe(
-        timeout(reuqestTimeout),
+        tap(() => {
+          let dislikes = ctx.getState().dislikes;
+          dislikes = dislikes.filter(
+            dislike =>
+              dislike.parentDocId !== (action.commentId || action.postId)
+          );
+          ctx.patchState({ dislikes });
+        }),
         catchError(error => {
           ctx.dispatch(new HandleApiFailure());
           throw error;
@@ -98,6 +129,10 @@ export class UserState {
     return this.postService.getUserLikes(action.uuid).pipe(
       tap(likeResponses => {
         ctx.patchState({ likes: likeResponses });
+      }),
+      catchError(error => {
+        ctx.dispatch(new HandleApiFailure());
+        throw error;
       })
     );
   }
@@ -108,6 +143,10 @@ export class UserState {
     return this.postService.getUserDislikes(action.uuid).pipe(
       tap(dislikeResponses => {
         ctx.patchState({ dislikes: dislikeResponses });
+      }),
+      catchError(error => {
+        ctx.dispatch(new HandleApiFailure());
+        throw error;
       })
     );
   }

@@ -5,6 +5,7 @@
   "ADD_YOUR_POST": "发帖",
   "REPLY": "回复",
   "OFFLINE": "连不上网络",
+  "RETRY": "重试",
   "ADD": {
     "TITLE": "标题",
     "MESSAGE": "内容",

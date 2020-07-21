@@ -5,6 +5,7 @@
   "ADD_YOUR_POST": "Post",
   "REPLY": "Reply",
   "OFFLINE": "Oops! Unable to connect to the interet.",
+  "RETRY": "Retry",
   "ADD": {
     "TITLE": "Title",
     "MESSAGE": "Message",

@@ -15,7 +15,6 @@ import {
   getDoesUserLike
 } from 'src/app/store/user/user.selectors';
 import { Comment } from '../../models/comment.interface';
-import { PostDetailsService } from '../../service/post-details.service';
 
 @Component({
   selector: 'app-post-comments',
@@ -41,11 +40,12 @@ export class PostCommentsComponent {
   @Input() shouldShowReplyTo: boolean;
 
   @Output() cancelComment = new EventEmitter();
+  @Output() saveComment = new EventEmitter<{
+    comment: string;
+    parentDocId: string;
+  }>();
 
-  constructor(
-    private store: Store,
-    private postDetailsService: PostDetailsService
-  ) {}
+  constructor(private store: Store) {}
 
   showReplyTo(comment: Comment) {
     comment.shouldShowReplyTo = true;
@@ -67,64 +67,63 @@ export class PostCommentsComponent {
     return this.store.select(getDoesUserDislike(commentId));
   }
 
-  like(commentId: string) {
+  like(comment: Comment) {
     const uuid = this.store.selectSnapshot(getUuid);
-    this.doesUserLikesComment$(commentId)
+    this.doesUserLikesComment$(comment.id)
       .pipe(first())
       .subscribe((userLikes: boolean) => {
         if (userLikes) {
           this.store.dispatch(
-            new CancelLikeAPostComment(uuid, this.postId, commentId)
+            new CancelLikeAPostComment(uuid, this.postId, comment.id)
           );
+          comment.likesCount--;
         } else {
           this.store.dispatch(
-            new LikeAPostComment(uuid, this.postId, commentId)
+            new LikeAPostComment(uuid, this.postId, comment.id)
           );
+          comment.likesCount++;
 
-          this.doesUserDislikesComment$(commentId)
+          this.doesUserDislikesComment$(comment.id)
             .pipe(first(), filter(Boolean))
             .subscribe(() => {
               this.store.dispatch(
-                new CancelDislikeAPostComment(uuid, this.postId, commentId)
+                new CancelDislikeAPostComment(uuid, this.postId, comment.id)
               );
+              comment.dislikesCount--;
             });
         }
       });
   }
 
-  dislike(commentId: string) {
+  dislike(comment: Comment) {
     const uuid = this.store.selectSnapshot(getUuid);
-    this.doesUserDislikesComment$(commentId)
+    this.doesUserDislikesComment$(comment.id)
       .pipe(first())
       .subscribe((userDislikes: boolean) => {
         if (userDislikes) {
           this.store.dispatch(
-            new CancelDislikeAPostComment(uuid, this.postId, commentId)
+            new CancelDislikeAPostComment(uuid, this.postId, comment.id)
           );
+          comment.dislikesCount--;
         } else {
           this.store.dispatch(
-            new DislikeAPostComment(uuid, this.postId, commentId)
+            new DislikeAPostComment(uuid, this.postId, comment.id)
           );
+          comment.dislikesCount++;
 
-          this.doesUserLikesComment$(commentId)
+          this.doesUserLikesComment$(comment.id)
             .pipe(first(), filter(Boolean))
             .subscribe(() => {
               this.store.dispatch(
-                new CancelLikeAPostComment(uuid, this.postId, commentId)
+                new CancelLikeAPostComment(uuid, this.postId, comment.id)
               );
+              comment.likesCount--;
             });
         }
       });
   }
 
-  saveComment(comment: string, parentCommentId: string) {
-    this.postDetailsService
-      .saveComment(
-        comment,
-        this.store.selectSnapshot(getUuid),
-        parentCommentId,
-        this.postId
-      )
-      .subscribe();
+  onSaveComment(comment: string, parentDocId: string) {
+    this.saveComment.emit({ comment, parentDocId });
   }
 }

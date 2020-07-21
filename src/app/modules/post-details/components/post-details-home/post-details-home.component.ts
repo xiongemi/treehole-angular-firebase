@@ -2,8 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
+import { clone } from 'ramda';
 import { merge, Observable, Subscription } from 'rxjs';
-import { first, map, switchMap, filter } from 'rxjs/operators';
+import {
+  distinctUntilChanged,
+  filter,
+  first,
+  map,
+  switchMap
+} from 'rxjs/operators';
 import { Post } from 'src/app/models/post.interface';
 import { SortBy } from 'src/app/models/sort-by.enum';
 import { getUuid } from 'src/app/store/settings/settings.selectors';
@@ -19,6 +26,14 @@ import {
 } from 'src/app/store/user/user.selectors';
 import { Comment } from '../../models/comment.interface';
 import { PostDetailsService } from '../../service/post-details.service';
+import {
+  GetPostComments,
+  GetPostDetails
+} from '../../store/post-details.actions';
+import {
+  getPostComments,
+  getPostDetails
+} from '../../store/post-details.selectors';
 
 @Component({
   selector: 'app-post-details-home',
@@ -32,6 +47,7 @@ export class PostDetailsHomeComponent implements OnInit, OnDestroy {
   comments: Comment[];
 
   shouldShowReplyTo = true;
+  hasError = false;
   SortBy = SortBy;
   sortBy = new FormControl(SortBy.MostLikes);
   doesUserLikePost$: Observable<boolean>;
@@ -50,30 +66,38 @@ export class PostDetailsHomeComponent implements OnInit, OnDestroy {
       map(params => {
         this.postId = params.id;
         return this.postId;
+      }),
+      distinctUntilChanged()
+    );
+
+    this.subscription.add(
+      postId$.subscribe(() => {
+        this.getPostDetails();
       })
     );
 
     this.subscription.add(
-      postId$
-        .pipe(
-          switchMap((postId: string) => {
-            return this.postDetailsService.getPostDetails(postId);
-          })
-        )
-        .subscribe(post => (this.post = post))
+      this.store.select(getPostDetails).subscribe(post => {
+        this.post = clone(post);
+      })
+    );
+
+    this.subscription.add(
+      this.store.select(getPostComments).subscribe(comments => {
+        this.comments = clone(comments);
+      })
     );
 
     this.subscription.add(
       merge(postId$, this.sortBy.valueChanges)
         .pipe(
           switchMap(() => {
-            return this.postDetailsService.getComments(
-              this.postId,
-              this.sortBy.value
+            return this.store.dispatch(
+              new GetPostComments(this.postId, this.sortBy.value)
             );
           })
         )
-        .subscribe(comments => (this.comments = comments))
+        .subscribe()
     );
 
     this.doesUserLikePost$ = postId$.pipe(
@@ -113,6 +137,7 @@ export class PostDetailsHomeComponent implements OnInit, OnDestroy {
             this.store.dispatch(
               new CancelDislikeAPostComment(uuid, this.postId)
             );
+            this.post.dislikesCount--;
           });
       }
     });
@@ -136,19 +161,36 @@ export class PostDetailsHomeComponent implements OnInit, OnDestroy {
               this.store.dispatch(
                 new CancelLikeAPostComment(uuid, this.postId)
               );
+              this.post.likesCount--;
             });
         }
       });
   }
 
-  saveComment(comment: string) {
+  saveComment(comment: string, parentDocId: string) {
     this.postDetailsService
       .saveComment(
         comment,
         this.store.selectSnapshot(getUuid),
-        this.postId,
+        parentDocId,
         this.postId
       )
-      .subscribe();
+      .subscribe(() => {
+        this.store.dispatch(
+          new GetPostComments(this.postId, this.sortBy.value)
+        );
+      });
+  }
+
+  getPostDetails() {
+    this.store.dispatch(new GetPostDetails(this.postId)).subscribe(
+      () => {
+        this.hasError = false;
+      },
+      () => {
+        this.hasError = true;
+      }
+    );
+    this.store.dispatch(new GetPostComments(this.postId, this.sortBy.value));
   }
 }

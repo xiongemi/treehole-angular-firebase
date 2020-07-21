@@ -8,7 +8,7 @@
     </p>
   </nz-comment-content>
   <nz-comment-action>
-    <button nz-button nzType="link" (click)="like(comment.id)">
+    <button nz-button nzType="link" (click)="like(comment)">
       <i
         nz-tooltip
         nzTitle="Like"
@@ -22,7 +22,7 @@
     </button>
   </nz-comment-action>
   <nz-comment-action>
-    <button nz-button nzType="link" (click)="dislike(comment.id)">
+    <button nz-button nzType="link" (click)="dislike(comment)">
       <i
         nz-tooltip
         nzTitle="Dislike"
@@ -47,7 +47,7 @@
     class="db ph3-ns"
     *ngIf="comment.shouldShowReplyTo"
     (cancel)="hideReplyTo(comment)"
-    (saveComment)="saveComment($event, comment.id)"
+    (saveComment)="onSaveComment($event, comment.id)"
     [@inOut]
   ></app-comment-reply-to>
 
@@ -80,6 +80,7 @@
       *ngIf="comment.shouldShowChildComments"
       [postId]="postId"
       [comments]="comment.childComments"
+      (saveComment)="saveComment.emit($event)"
     ></app-post-comments>
   </ng-container>
 </nz-comment>
