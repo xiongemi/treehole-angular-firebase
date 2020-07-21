@@ -1,0 +1,44 @@
+{
+  "TITLE": "树洞",
+  "SUBTITLE": "匿名讨论区",
+  "LANGUAGE": "语言",
+  "ADD_YOUR_POST": "发帖",
+  "REPLY": "回复",
+  "OFFLINE": "连不上网络",
+  "RETRY": "重试",
+  "ADD": {
+    "TITLE": "标题",
+    "MESSAGE": "内容",
+    "SUBMIT": "保存",
+    "CANCEL": "取消"
+  },
+  "ERROR": {
+    "REQUIRED": "此项不能为空",
+    "MINLENGTH": "此项字数不够",
+    "MAXLENGTH": "此项字数太多了"
+  },
+  "SORT_BY": {
+    "OLDEST_POSTS": "最旧的帖子",
+    "NEWEST_POSTS": "最新的帖子",
+    "MOST_LIKES": "最多点赞",
+    "MOST_DISLIKES": "最多不喜欢",
+    "MOST_COMMENTS": "最多评论"
+  },
+  "MESSAGES": {
+    "SUCCESS": "成功保存！",
+    "FAILED": "不好意思~ 出错了，请重试一次。"
+  },
+  "CANCEL_EDITING_MODAL": {
+    "TITLE": "取消发帖",
+    "CONTENT": "你有未保存的信息，你确定你要取消发帖吗？",
+    "YES": "确定，不保存",
+    "NO": "继续编辑"
+  },
+  "COMMENTS": {
+    "COMMENTS": "留言",
+    "REPLY": "{{ count }} 回复",
+    "REPLIES": "{{ count }} 回复",
+    "VIEW": "查看",
+    "HIDE": "收起"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "TITLE": "Treehole",
+  "SUBTITLE": "Annoymouse Disucssion Forum",
+  "LANGUAGE": "Language",
+  "ADD_YOUR_POST": "Post",
+  "REPLY": "Reply",
+  "OFFLINE": "Oops! Unable to connect to the interet.",
+  "RETRY": "Retry",
+  "ADD": {
+    "TITLE": "Title",
+    "MESSAGE": "Message",
+    "SUBMIT": "Submit",
+    "CANCEL": "Cancel"
+  },
+  "ERROR": {
+    "REQUIRED": "Input is required",
+    "MINLENGTH": "Please enter a longer text",
+    "MAXLENGTH": "The input is too long"
+  },
+  "SORT_BY": {
+    "OLDEST_POSTS": "Oldest Posts",
+    "NEWEST_POSTS": "Newest Posts",
+    "MOST_LIKES": "Most Likes",
+    "MOST_DISLIKES": "Most Dislikes",
+    "MOST_COMMENTS": "Most Comments"
+  },
+  "MESSAGES": {
+    "SUCCESS": "Saved successfully!",
+    "FAILED": "Oops! Something went wrong~ Please try again."
+  },
+  "CANCEL_EDITING_MODAL": {
+    "TITLE": "Cancel Editing",
+    "CONTENT": "You got unsaved changes. Are you sure you want to cancel editing?",
+    "YES": "Yes, don't save.",
+    "NO": "No, continue editing."
+  },
+  "COMMENTS": {
+    "COMMENTS": "Comments",
+    "REPLY": "{{ count }} Reply",
+    "REPLIES": "{{ count }} Replies",
+    "VIEW": "View",
+    "HIDE": "Hide"
+  }
+}
