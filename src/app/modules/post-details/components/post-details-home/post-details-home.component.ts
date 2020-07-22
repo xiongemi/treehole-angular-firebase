@@ -4,26 +4,15 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { clone } from 'ramda';
 import { merge, Observable, Subscription } from 'rxjs';
-import {
-  distinctUntilChanged,
-  filter,
-  first,
-  map,
-  switchMap
-} from 'rxjs/operators';
-import { Post } from 'src/app/models/post.interface';
-import { SortBy } from 'src/app/models/sort-by.enum';
-import { getUuid } from 'src/app/store/settings/settings.selectors';
-import {
-  CancelDislikeAPostComment,
-  CancelLikeAPostComment,
-  DislikeAPostComment,
-  LikeAPostComment
-} from 'src/app/store/user/user.actions';
+import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { Post } from '../../../../models/post.interface';
+import { SortBy } from '../../../../models/sort-by.enum';
+import { LikeDislikeService } from '../../../../shared/services/like-dislike.service';
+import { getUuid } from '../../../../store/settings/settings.selectors';
 import {
   getDoesUserDislike,
   getDoesUserLike
-} from 'src/app/store/user/user.selectors';
+} from '../../../../store/user/user.selectors';
 import { Comment } from '../../models/comment.interface';
 import { PostDetailsService } from '../../service/post-details.service';
 import {
@@ -58,7 +47,8 @@ export class PostDetailsHomeComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private store: Store,
-    private postDetailsService: PostDetailsService
+    private postDetailsService: PostDetailsService,
+    private likeDislikeService: LikeDislikeService
   ) {}
 
   ngOnInit(): void {
@@ -122,49 +112,19 @@ export class PostDetailsHomeComponent implements OnInit, OnDestroy {
   }
 
   like() {
-    const uuid = this.store.selectSnapshot(getUuid);
-    this.doesUserLikePost$.pipe(first()).subscribe((userLikes: boolean) => {
-      if (userLikes) {
-        this.store.dispatch(new CancelLikeAPostComment(uuid, this.postId));
-        this.post.likesCount--;
-      } else {
-        this.store.dispatch(new LikeAPostComment(uuid, this.postId));
-        this.post.likesCount++;
-
-        this.doesUserDislikePost$
-          .pipe(first(), filter(Boolean))
-          .subscribe(() => {
-            this.store.dispatch(
-              new CancelDislikeAPostComment(uuid, this.postId)
-            );
-            this.post.dislikesCount--;
-          });
-      }
-    });
+    this.likeDislikeService.like(
+      this.doesUserLikePost$,
+      this.doesUserDislikePost$,
+      this.post
+    );
   }
 
   dislike() {
-    const uuid = this.store.selectSnapshot(getUuid);
-    this.doesUserDislikePost$
-      .pipe(first())
-      .subscribe((userDislikes: boolean) => {
-        if (userDislikes) {
-          this.store.dispatch(new CancelDislikeAPostComment(uuid, this.postId));
-          this.post.dislikesCount--;
-        } else {
-          this.store.dispatch(new DislikeAPostComment(uuid, this.postId));
-          this.post.dislikesCount++;
-
-          this.doesUserLikePost$
-            .pipe(first(), filter(Boolean))
-            .subscribe(() => {
-              this.store.dispatch(
-                new CancelLikeAPostComment(uuid, this.postId)
-              );
-              this.post.likesCount--;
-            });
-        }
-      });
+    this.likeDislikeService.dislike(
+      this.doesUserLikePost$,
+      this.doesUserDislikePost$,
+      this.post
+    );
   }
 
   saveComment(comment: string, parentDocId: string) {

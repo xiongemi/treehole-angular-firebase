@@ -41,12 +41,28 @@
     <a [routerLink]="['/post', post.id]">{{ post.message }}</a>
     <ul nz-list-item-actions>
       <nz-list-item-action>
-        <i nz-icon nzType="like"></i>
-        {{ post.likesCount }}
+        <button nz-button nzType="link" (click)="like(post)">
+          <i
+            nz-icon
+            nzType="like"
+            [nzTheme]="
+              (doesUserLikesComment$(post.id) | async) ? 'fill' : 'outline'
+            "
+          ></i>
+          {{ post.likesCount }}
+        </button>
       </nz-list-item-action>
       <nz-list-item-action>
-        <i nz-icon nzType="dislike"></i>
-        {{ post.dislikesCount }}
+        <button nz-button nzType="link" (click)="dislike(post)">
+          <i
+            nz-icon
+            nzType="dislike"
+            [nzTheme]="
+              (doesUserDislikesComment$(post.id) | async) ? 'fill' : 'outline'
+            "
+          ></i>
+          {{ post.dislikesCount }}
+        </button>
       </nz-list-item-action>
       <nz-list-item-action>
         <a [routerLink]="['/post', post.id]">

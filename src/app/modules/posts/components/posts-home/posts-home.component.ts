@@ -1,11 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Actions, ofActionDispatched, Store } from '@ngxs/store';
+import { clone } from 'ramda';
 import { Observable, Subscription } from 'rxjs';
-import { Post } from 'src/app/models/post.interface';
-import { SetLanguage } from 'src/app/store/settings/settings.actions';
-import { getLanguage } from 'src/app/store/settings/settings.selectors';
+import { Post } from '../../../../models/post.interface';
 import { SortBy } from '../../../../models/sort-by.enum';
+import { LikeDislikeService } from '../../../../shared/services/like-dislike.service';
+import { SetLanguage } from '../../../../store/settings/settings.actions';
+import { getLanguage } from '../../../../store/settings/settings.selectors';
+import {
+  getDoesUserDislike,
+  getDoesUserLike
+} from '../../../../store/user/user.selectors';
 import {
   ChangePostsPageIndex,
   ChangePostsPageSize,
@@ -38,7 +44,11 @@ export class PostsHomeComponent implements OnInit, OnDestroy {
 
   private subscription = new Subscription();
 
-  constructor(private store: Store, private actions: Actions) {}
+  constructor(
+    private store: Store,
+    private actions: Actions,
+    private likeDislikeService: LikeDislikeService
+  ) {}
 
   ngOnInit() {
     this.getPosts();
@@ -57,7 +67,7 @@ export class PostsHomeComponent implements OnInit, OnDestroy {
 
     this.subscription.add(
       this.store.select(getPostsOncurrentPage).subscribe(posts => {
-        this.posts = posts;
+        this.posts = clone(posts);
       })
     );
 
@@ -96,5 +106,29 @@ export class PostsHomeComponent implements OnInit, OnDestroy {
 
   onPageSizeChange(pageSize: number) {
     this.store.dispatch(new ChangePostsPageSize(pageSize));
+  }
+
+  doesUserLikesComment$(postId: string): Observable<boolean> {
+    return this.store.select(getDoesUserLike(postId));
+  }
+
+  doesUserDislikesComment$(postId: string): Observable<boolean> {
+    return this.store.select(getDoesUserDislike(postId));
+  }
+
+  like(post: Post) {
+    this.likeDislikeService.like(
+      this.doesUserLikesComment$(post.id),
+      this.doesUserDislikesComment$(post.id),
+      post
+    );
+  }
+
+  dislike(post: Post) {
+    this.likeDislikeService.dislike(
+      this.doesUserLikesComment$(post.id),
+      this.doesUserDislikesComment$(post.id),
+      post
+    );
   }
 }

@@ -2,18 +2,11 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { filter, first } from 'rxjs/operators';
-import { getUuid } from 'src/app/store/settings/settings.selectors';
-import {
-  CancelDislikeAPostComment,
-  CancelLikeAPostComment,
-  DislikeAPostComment,
-  LikeAPostComment
-} from 'src/app/store/user/user.actions';
+import { LikeDislikeService } from '../../../../shared/services/like-dislike.service';
 import {
   getDoesUserDislike,
   getDoesUserLike
-} from 'src/app/store/user/user.selectors';
+} from '../../../../store/user/user.selectors';
 import { Comment } from '../../models/comment.interface';
 
 @Component({
@@ -45,7 +38,10 @@ export class PostCommentsComponent {
     parentDocId: string;
   }>();
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private likeDislikeService: LikeDislikeService
+  ) {}
 
   showReplyTo(comment: Comment) {
     comment.shouldShowReplyTo = true;
@@ -68,59 +64,19 @@ export class PostCommentsComponent {
   }
 
   like(comment: Comment) {
-    const uuid = this.store.selectSnapshot(getUuid);
-    this.doesUserLikesComment$(comment.id)
-      .pipe(first())
-      .subscribe((userLikes: boolean) => {
-        if (userLikes) {
-          this.store.dispatch(
-            new CancelLikeAPostComment(uuid, this.postId, comment.id)
-          );
-          comment.likesCount--;
-        } else {
-          this.store.dispatch(
-            new LikeAPostComment(uuid, this.postId, comment.id)
-          );
-          comment.likesCount++;
-
-          this.doesUserDislikesComment$(comment.id)
-            .pipe(first(), filter(Boolean))
-            .subscribe(() => {
-              this.store.dispatch(
-                new CancelDislikeAPostComment(uuid, this.postId, comment.id)
-              );
-              comment.dislikesCount--;
-            });
-        }
-      });
+    this.likeDislikeService.like(
+      this.doesUserLikesComment$(comment.id),
+      this.doesUserDislikesComment$(comment.id),
+      comment
+    );
   }
 
   dislike(comment: Comment) {
-    const uuid = this.store.selectSnapshot(getUuid);
-    this.doesUserDislikesComment$(comment.id)
-      .pipe(first())
-      .subscribe((userDislikes: boolean) => {
-        if (userDislikes) {
-          this.store.dispatch(
-            new CancelDislikeAPostComment(uuid, this.postId, comment.id)
-          );
-          comment.dislikesCount--;
-        } else {
-          this.store.dispatch(
-            new DislikeAPostComment(uuid, this.postId, comment.id)
-          );
-          comment.dislikesCount++;
-
-          this.doesUserLikesComment$(comment.id)
-            .pipe(first(), filter(Boolean))
-            .subscribe(() => {
-              this.store.dispatch(
-                new CancelLikeAPostComment(uuid, this.postId, comment.id)
-              );
-              comment.likesCount--;
-            });
-        }
-      });
+    this.likeDislikeService.dislike(
+      this.doesUserLikesComment$(comment.id),
+      this.doesUserDislikesComment$(comment.id),
+      comment
+    );
   }
 
   onSaveComment(comment: string, parentDocId: string) {

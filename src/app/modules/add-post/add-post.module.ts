@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxsModule } from '@ngxs/store';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 import { AddPostRoutingModule } from './add-post-routing.module';
 import { AddPostHomeComponent } from './components/add-post-home.component';
 import { AddPostService } from './services/add-post.service';

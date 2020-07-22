@@ -18,9 +18,11 @@ export const firebaseConfig = {
 };
 ```
 
+The base href in dev is /treehole-angular-firebase/. Run `npm run start` will serve the app on `http://localhost:4200/treehole-angular-firebase/`.
+
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/treehole-angular-firebase/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
