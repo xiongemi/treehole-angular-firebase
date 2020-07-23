@@ -29,10 +29,7 @@
               },
               "src/manifest.webmanifest"
             ],
-            "styles": [
-              "src/theme.less",
-              "src/styles.css"
-            ],
+            "styles": ["src/theme.less", "src/styles.css"],
             "scripts": []
           },
           "configurations": {
@@ -97,9 +94,7 @@
               "src/assets",
               "src/manifest.webmanifest"
             ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "styles": ["src/styles.css"],
             "scripts": []
           }
         },
@@ -112,9 +107,7 @@
               "e2e/tsconfig.json",
               "tsconfig.server.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {
@@ -134,7 +127,8 @@
           "options": {
             "outputPath": "dist/treehole-angular-firebase/server",
             "main": "server.ts",
-            "tsConfig": "tsconfig.server.json"
+            "tsConfig": "tsconfig.server.json",
+            "externalDependencies": ["@angular/fire/firestore"]
           },
           "configurations": {
             "production": {
@@ -168,9 +162,7 @@
           "options": {
             "browserTarget": "treehole-angular-firebase:build:production",
             "serverTarget": "treehole-angular-firebase:server:production",
-            "routes": [
-              "/"
-            ]
+            "routes": ["/"]
           },
           "configurations": {
             "production": {}

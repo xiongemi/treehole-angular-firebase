@@ -7,7 +7,7 @@
     "source": "functions"
   },
   "hosting": {
-    "public": "dist/treehole-angular-firebase",
+    "public": "dist/treehole-angular-firebase/browser",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
