@@ -25,6 +25,7 @@ export const firebaseConfig = {
 - deploy to github: `npm run deploy:github`
 - run production build locally: `npm run build` and `http-server dist/treehole-angular-firebase/browser`
 - deploy to firebase hosting: `npm run deploy:firebase`
+- ssr build (not working right now): `npm run build:ssr` and `npm run serve:ssr`
 
 ## Development server
 
