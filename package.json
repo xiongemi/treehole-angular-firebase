@@ -37,7 +37,7 @@
     "@ngxs/logger-plugin": "^3.6.2",
     "@ngxs/storage-plugin": "^3.6.2",
     "@ngxs/store": "^3.6.2",
-    "angular-cli-ghpages": "^0.6.2",
+    "angular-cli-ghpages": "^1.0.0-rc.1",
     "express": "^4.15.2",
     "firebase": "^8.2.4",
     "firebase-admin": "^9.4.2",
