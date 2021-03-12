@@ -1,11 +1,25 @@
 # Treehole Angular Firebase
 
+A discussion forum using Angular as frontend and Firebase as backend:
+
+![sreenshot](https://github.com/xiongemi/treehole-angular-firebase/blob/master/src/assets/images/screenshot.png?raw=true)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.9.
+
+## Tech Stack
+
+- Frontend: Angular
+- Component Library: ng-zorro-antd (Ant Design of Angular)
+- Backend: Firebase, integrate using AngularFire
+- Frontend Session: uuid
+- Internalization: @ngx-translate
+- State Management: NGXS
+- CSS library: tachyons
 
 ## Add Your Own Firebase Config
 
 Create a file named `firebase.config.ts` under `src` folder.
-Add your own firebase config in this file, like
+Add your own firebase config in this file, in below format
 
 ```
 export const firebaseConfig = {
