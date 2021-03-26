@@ -10,14 +10,13 @@ import {
   GetUserDislikes,
   GetUserLikes,
   HandleOffline,
-  HandleOnline
+  HandleOnline,
 } from './store/user/user.actions';
 import { getIsOnline } from './store/user/user.selectors';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
   language$: Observable<Language>;
@@ -31,11 +30,11 @@ export class AppComponent implements OnInit {
     this.language$ = this.store.select(getLanguage);
     this.isOnline$ = this.store.select(getIsOnline);
 
-    this.language$.pipe(first()).subscribe(language => {
+    this.language$.pipe(first()).subscribe((language) => {
       this.store.dispatch(new SetLanguage(language));
     });
 
-    this.store.selectOnce(getUuid).subscribe(uuid => {
+    this.store.selectOnce(getUuid).subscribe((uuid) => {
       this.store.dispatch(new GetUserLikes(uuid));
       this.store.dispatch(new GetUserDislikes(uuid));
     });

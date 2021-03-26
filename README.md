@@ -64,3 +64,36 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Firestore Cloud Data Structure
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
+- <span class="material-icons notranslate" aria-hidden="true" translate="no">collections_bookmark</span> posts
+  - <span class="material-icons notranslate" aria-hidden="true" translate="no">class</span> post1
+  - id: "Ebd1BwdaNqniLCsy0xOb"
+  - uuid: "e51d2784-b163-41af-9e66-0bbec811fc63"
+  - title: "post title"
+  - message: "This is a first line for a new Forum. \nThis is a second line for a new Forum."
+  - language: "en"
+  - createdAt: "2021-02-04T06:17:38.936Z"
+  - likesCount: 3
+  - dislikesCount: 4
+  - commentsCount: 3
+    - <span class="material-icons notranslate" aria-hidden="true" translate="no">collections_bookmark</span> likes
+      - <span class="material-icons notranslate" aria-hidden="true" translate="no">class</span> like1
+        - id: "L0svxEZDEiQEl2Djof1R"
+        - uuid: "0fbfd447-49f5-4e2c-bbc7-bc8afb8a62a2"
+        - createdAt: "2021-02-04T06:17:38.936Z"
+      - <span class="material-icons notranslate" aria-hidden="true" translate="no">class</span> like2
+        - ...
+    - <span class="material-icons notranslate" aria-hidden="true" translate="no">collections_bookmark</span> dislikes
+       - <span class="material-icons notranslate" aria-hidden="true" translate="no">class</span> dislike1
+         - id: "niZDMC5yu9WBXW45p0Ny"
+         - uuid: "0fbfd447-49f5-4e2c-bbc7-bc8afb8a62a2"
+         - createdAt: "2021-02-04T06:17:38.936Z"
+      - <span class="material-icons notranslate" aria-hidden="true" translate="no">class</span> dislike2
+        - ...
+    - <span class="material-icons notranslate" aria-hidden="true" translate="no">collections_bookmark</span> comments
+      - <span class="material-icons notranslate" aria-hidden="true" translate="no">class</span> comment1
