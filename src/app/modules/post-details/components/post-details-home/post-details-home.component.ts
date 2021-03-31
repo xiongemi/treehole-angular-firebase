@@ -14,7 +14,7 @@ import {
   getDoesUserLike
 } from '../../../../store/user/user.selectors';
 import { Comment } from '../../models/comment.interface';
-import { PostDetailsService } from '../../service/post-details.service';
+import { PostDetailsService } from '../../services/post-details.service';
 import {
   GetPostComments,
   GetPostDetails

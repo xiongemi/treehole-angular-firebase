@@ -6,7 +6,7 @@ import { CommentReplyToComponent } from './components/comment-reply-to/comment-r
 import { PostCommentsComponent } from './components/post-comments/post-comments.component';
 import { PostDetailsHomeComponent } from './components/post-details-home/post-details-home.component';
 import { PostDetailsRoutingModule } from './post-details-routing.module';
-import { PostDetailsService } from './service/post-details.service';
+import { PostDetailsService } from './services/post-details.service';
 import { PostDetailsState } from './store/post-details.state';
 
 @NgModule({

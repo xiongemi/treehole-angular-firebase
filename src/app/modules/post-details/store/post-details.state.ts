@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, State, StateContext } from '@ngxs/store';
 import { catchError, tap } from 'rxjs/operators';
 import { HandleApiFailure } from 'src/app/store/app.actions';
-import { PostDetailsService } from '../service/post-details.service';
+import { PostDetailsService } from '../services/post-details.service';
 import { initPostDetailsStateModel } from './post-details-state-model-init.const';
 import { PostDetailsStateModel } from './post-details-state-model.interface';
 import { GetPostComments, GetPostDetails } from './post-details.actions';
