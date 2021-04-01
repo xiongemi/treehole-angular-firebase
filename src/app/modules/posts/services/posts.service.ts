@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {
   AngularFirestore,
   CollectionReference,
-  DocumentData,
   QuerySnapshot
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
@@ -39,10 +38,10 @@ export class PostsService {
       })
       .get()
       .pipe(
-        map((query: QuerySnapshot<DocumentData>) => {
+        map((query: QuerySnapshot<PostResponse>) => {
           return query.docs.map(doc => {
             const post = transformPostResponseToPost(
-              doc.data() as PostResponse
+              doc.data()
             );
             post.id = doc.id;
             return post;
