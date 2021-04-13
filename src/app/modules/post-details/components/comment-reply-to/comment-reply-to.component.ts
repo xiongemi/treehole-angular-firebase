@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngxs/store';
 import { filter } from 'rxjs/operators';
 import { markFormDeepDirty } from 'src/app/shared/services/form.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
@@ -9,7 +8,7 @@ import { ModalService } from 'src/app/shared/services/modal.service';
   selector: 'app-comment-reply-to',
   templateUrl: './comment-reply-to.component.html',
   // tslint:disable-next-line: no-host-metadata-property
-  host: { class: 'db' }
+  host: { class: 'db' },
 })
 export class CommentReplyToComponent {
   @Output() saveComment = new EventEmitter<void>();
@@ -19,11 +18,11 @@ export class CommentReplyToComponent {
     comment: new FormControl(null, [
       Validators.required,
       Validators.minLength(10),
-      Validators.maxLength(300)
-    ])
+      Validators.maxLength(300),
+    ]),
   });
 
-  constructor(private store: Store, private modalService: ModalService) {}
+  constructor(private modalService: ModalService) {}
 
   onSubmit() {
     markFormDeepDirty(this.replyToFormGroup);

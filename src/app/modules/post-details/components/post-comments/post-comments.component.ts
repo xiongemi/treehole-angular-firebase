@@ -30,9 +30,7 @@ export class PostCommentsComponent {
   @Input() comments: Comment[];
   @Input() postId: string;
   @Input() parentDocId: string;
-  @Input() shouldShowReplyTo: boolean;
 
-  @Output() cancelComment = new EventEmitter();
   @Output() saveComment = new EventEmitter<{
     comment: string;
     parentDocId: string;

@@ -18,7 +18,7 @@ export class AddPostService {
       likesCount: 0,
       commentsCount: 0,
       dislikesCount: 0,
-      uuid
+      uuid,
     };
     return from(this.firestore.collection('posts').add(post));
   }

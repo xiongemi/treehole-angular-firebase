@@ -8,7 +8,7 @@ import { SaveAddedPost } from './add-post.actions';
 
 @State<null>({
   name: 'addPost',
-  defaults: null
+  defaults: null,
 })
 @Injectable()
 export class AddPostState {
@@ -16,13 +16,13 @@ export class AddPostState {
 
   @Action(SaveAddedPost)
   saveAddedPost(ctx: StateContext<null>, action: SaveAddedPost) {
-    this.addPostService
+    return this.addPostService
       .savePost(action.title, action.message, action.uuid, action.language)
       .pipe(
         tap(() => {
-          return ctx.dispatch(new HandleApiSuccess());
+          ctx.dispatch(new HandleApiSuccess());
         }),
-        catchError(error => {
+        catchError((error) => {
           ctx.dispatch(new HandleApiFailure());
           throw error;
         })

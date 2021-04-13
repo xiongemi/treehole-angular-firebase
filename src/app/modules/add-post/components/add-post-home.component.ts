@@ -9,26 +9,26 @@ import { ModalService } from 'src/app/shared/services/modal.service';
 import { HandleApiSuccess } from 'src/app/store/app.actions';
 import {
   getLanguage,
-  getUuid
+  getUuid,
 } from 'src/app/store/settings/settings.selectors';
 import { SaveAddedPost } from '../store/add-post.actions';
 
 @Component({
   selector: 'app-add-post-home',
-  templateUrl: './add-post-home.component.html'
+  templateUrl: './add-post-home.component.html',
 })
 export class AddPostHomeComponent {
   addForm = new FormGroup({
     title: new FormControl(null, [
       Validators.required,
       Validators.minLength(10),
-      Validators.maxLength(200)
+      Validators.maxLength(200),
     ]),
     message: new FormControl(null, [
       Validators.required,
       Validators.minLength(50),
-      Validators.maxLength(1000)
-    ])
+      Validators.maxLength(1000),
+    ]),
   });
 
   isLoading = false;
@@ -53,7 +53,6 @@ export class AddPostHomeComponent {
           )
         )
         .subscribe(() => {
-          this.store.dispatch(new HandleApiSuccess());
           this.location.back();
           this.isLoading = false;
         });
