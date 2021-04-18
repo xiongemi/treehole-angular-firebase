@@ -21,7 +21,7 @@ function updateLikesDislikesCountOnPost(
     return;
   }
 
-  // Get the parent doc that contains the likesCount/dislikeCout key
+  // Get the parent doc that contains the likesCount/dislikesCount key
   const likesOrDislikesCollectionRef: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData> =
     change.after.ref.parent;
   const parentDocRef = likesOrDislikesCollectionRef.parent;
@@ -32,7 +32,7 @@ function updateLikesDislikesCountOnPost(
 
   return database.runTransaction((transaction) => {
     return transaction.get(parentDocRef).then((docRef) => {
-      // Get the current likesCount/dislikeCount
+      // Get the current likesCount/dislikesCount
       const currentCount = docRef.data()?.[collectionName + 'Count'] ?? 0;
       // Update the doc with the count and increment
       const updateValue: any = {};
