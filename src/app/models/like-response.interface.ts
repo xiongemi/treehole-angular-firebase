@@ -1,7 +1,7 @@
-import { Timestamp } from 'firebase/firestore-types';
+import { firestore } from 'firebase-admin';
 
 export interface LikeResponse {
   uuid: string;
   parentDocId: string;
-  createdAt?: Timestamp;
+  createdAt?: firestore.Timestamp;
 }

@@ -29,7 +29,10 @@
   [nzBordered]="true"
   class="bg-white"
 >
-  <nz-list-item *ngFor="let post of posts" [nzNoFlex]="true">
+  <nz-list-item
+    *ngFor="let post of posts; trackBy: trackById"
+    [nzNoFlex]="true"
+  >
     <nz-list-item-meta>
       <nz-list-item-meta-title>
         <a [routerLink]="['/post', post.id]">{{ post.title }}</a>
@@ -45,9 +48,7 @@
           <i
             nz-icon
             nzType="like"
-            [nzTheme]="
-              (doesUserLikesComment$(post.id) | async) ? 'fill' : 'outline'
-            "
+            [nzTheme]="post.doesUserLike ? 'fill' : 'outline'"
           ></i>
           {{ post.likesCount }}
         </button>
@@ -57,9 +58,7 @@
           <i
             nz-icon
             nzType="dislike"
-            [nzTheme]="
-              (doesUserDislikesComment$(post.id) | async) ? 'fill' : 'outline'
-            "
+            [nzTheme]="post.doesUserDislike ? 'fill' : 'outline'"
           ></i>
           {{ post.dislikesCount }}
         </button>

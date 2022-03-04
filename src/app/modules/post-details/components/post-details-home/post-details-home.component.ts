@@ -11,24 +11,24 @@ import { LikeDislikeService } from '../../../../shared/services/like-dislike.ser
 import { getUuid } from '../../../../store/settings/settings.selectors';
 import {
   getDoesUserDislike,
-  getDoesUserLike
+  getDoesUserLike,
 } from '../../../../store/user/user.selectors';
 import { Comment } from '../../models/comment.interface';
 import { PostDetailsService } from '../../services/post-details.service';
 import {
   GetPostComments,
-  GetPostDetails
+  GetPostDetails,
 } from '../../store/post-details.actions';
 import {
   getPostComments,
-  getPostDetails
+  getPostDetails,
 } from '../../store/post-details.selectors';
 
 @Component({
   selector: 'app-post-details-home',
   templateUrl: './post-details-home.component.html',
   // tslint:disable-next-line: no-host-metadata-property
-  host: { class: 'db bg-white' }
+  host: { class: 'db bg-white' },
 })
 export class PostDetailsHomeComponent implements OnInit, OnDestroy {
   postId: string;
@@ -53,7 +53,7 @@ export class PostDetailsHomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const postId$ = this.route.params.pipe(
-      map(params => {
+      map((params) => {
         this.postId = params.id;
         return this.postId;
       }),
@@ -67,13 +67,13 @@ export class PostDetailsHomeComponent implements OnInit, OnDestroy {
     );
 
     this.subscription.add(
-      this.store.select(getPostDetails).subscribe(post => {
+      this.store.select(getPostDetails).subscribe((post) => {
         this.post = clone(post);
       })
     );
 
     this.subscription.add(
-      this.store.select(getPostComments).subscribe(comments => {
+      this.store.select(getPostComments).subscribe((comments) => {
         this.comments = clone(comments);
       })
     );
@@ -91,11 +91,11 @@ export class PostDetailsHomeComponent implements OnInit, OnDestroy {
     );
 
     this.doesUserLikePost$ = postId$.pipe(
-      switchMap(postId => this.store.select(getDoesUserLike(postId)))
+      switchMap((postId) => this.store.select(getDoesUserLike(postId)))
     );
 
     this.doesUserDislikePost$ = postId$.pipe(
-      switchMap(postId => this.store.select(getDoesUserDislike(postId)))
+      switchMap((postId) => this.store.select(getDoesUserDislike(postId)))
     );
   }
 

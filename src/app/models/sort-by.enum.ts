@@ -3,7 +3,7 @@ export enum SortBy {
   NewestPosts = 'SORT_BY.NEWEST_POSTS',
   MostLikes = 'SORT_BY.MOST_LIKES',
   MostDislikes = 'SORT_BY.MOST_DISLIKES',
-  MostComments = 'SORT_BY.MOST_COMMENTS'
+  MostComments = 'SORT_BY.MOST_COMMENTS',
 }
 
 export const SortByRequest: Record<
@@ -13,15 +13,15 @@ export const SortByRequest: Record<
     orderByDirection: 'desc' | 'asc';
   }
 > = {
-  [SortBy.OldestPosts]: { orderByField: 'createdAt', orderByDirection: 'asc' },
-  [SortBy.NewestPosts]: { orderByField: 'createdAt', orderByDirection: 'desc' },
+  [SortBy.OldestPosts]: { orderByField: 'createdAt', orderByDirection: 'desc' },
+  [SortBy.NewestPosts]: { orderByField: 'createdAt', orderByDirection: 'asc' },
   [SortBy.MostLikes]: { orderByField: 'likesCount', orderByDirection: 'desc' },
   [SortBy.MostDislikes]: {
     orderByField: 'dislikesCount',
-    orderByDirection: 'desc'
+    orderByDirection: 'desc',
   },
   [SortBy.MostComments]: {
     orderByField: 'commentsCount',
-    orderByDirection: 'desc'
-  }
+    orderByDirection: 'desc',
+  },
 };

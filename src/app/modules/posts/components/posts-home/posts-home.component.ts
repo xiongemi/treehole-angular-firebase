@@ -10,28 +10,28 @@ import { SetLanguage } from '../../../../store/settings/settings.actions';
 import { getLanguage } from '../../../../store/settings/settings.selectors';
 import {
   getDoesUserDislike,
-  getDoesUserLike
+  getDoesUserLike,
 } from '../../../../store/user/user.selectors';
 import {
   ChangePostsPageIndex,
   ChangePostsPageSize,
-  GetPosts
+  GetPosts,
 } from '../../store/posts.actions';
 import {
-  getPostsOncurrentPage,
+  getPostsOnCurrentPageWithLikesAndDislikes,
   getPostsPageSize,
-  getTotalPostsNumber
+  getTotalPostsNumber,
 } from '../../store/posts.selectors';
 
 @Component({
   selector: 'app-posts-home',
   templateUrl: './posts-home.component.html',
-  styleUrls: ['./posts-home.component.css']
+  styleUrls: ['./posts-home.component.css'],
 })
 export class PostsHomeComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
   searchForm = new FormGroup({
-    sortBy: new FormControl(SortBy.NewestPosts)
+    sortBy: new FormControl(SortBy.NewestPosts),
   });
   SortBy = SortBy;
 
@@ -66,9 +66,11 @@ export class PostsHomeComponent implements OnInit, OnDestroy {
     );
 
     this.subscription.add(
-      this.store.select(getPostsOncurrentPage).subscribe(posts => {
-        this.posts = clone(posts);
-      })
+      this.store
+        .select(getPostsOnCurrentPageWithLikesAndDislikes)
+        .subscribe((posts) => {
+          this.posts = clone(posts);
+        })
     );
 
     this.totalPostNumber$ = this.store.select(getTotalPostsNumber);
@@ -130,5 +132,9 @@ export class PostsHomeComponent implements OnInit, OnDestroy {
       this.doesUserDislikesComment$(post.id),
       post
     );
+  }
+
+  trackById(post: Post) {
+    return post.id;
   }
 }

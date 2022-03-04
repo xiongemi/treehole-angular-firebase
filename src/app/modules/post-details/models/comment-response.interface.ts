@@ -1,4 +1,4 @@
-import { Timestamp } from 'firebase/firestore-types';
+import { firestore } from 'firebase-admin';
 
 import { Comment } from './comment.interface';
 
@@ -6,7 +6,7 @@ export interface CommentResponse {
   comment: string;
   uuid: string;
   parentDocId: string;
-  createdAt: Timestamp;
+  createdAt: firestore.Timestamp;
   likesCount: number;
   dislikesCount: number;
 }
@@ -18,6 +18,6 @@ export function transformCommentResponoseToComment(
     ...commentResponse,
     createdAt: commentResponse.createdAt.toDate(),
     shouldShowChildComments: true,
-    shouldShowReplyTo: false
+    shouldShowReplyTo: false,
   };
 }

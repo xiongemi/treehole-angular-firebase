@@ -9,4 +9,6 @@ export interface Comment {
   shouldShowReplyTo?: boolean;
   shouldShowChildComments?: boolean;
   childComments?: Comment[];
+  doesUserLike?: boolean;
+  doesUserDislike?: boolean;
 }
