@@ -6,7 +6,7 @@ import {
   DocumentReference,
   DocumentSnapshot,
   QuerySnapshot
-} from '@angular/fire/firestore';
+} from '@angular/fire/compat/firestore';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {

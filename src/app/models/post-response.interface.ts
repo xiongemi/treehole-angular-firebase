@@ -1,4 +1,4 @@
-import { Timestamp } from '@firebase/firestore-types';
+import { Timestamp } from 'firebase/firestore-types';
 
 import { Language } from './language.type';
 import { Post } from './post.interface';

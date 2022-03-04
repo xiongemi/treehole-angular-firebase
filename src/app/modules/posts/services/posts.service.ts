@@ -3,7 +3,7 @@ import {
   AngularFirestore,
   CollectionReference,
   QuerySnapshot
-} from '@angular/fire/firestore';
+} from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 
 import { map } from 'rxjs/operators';

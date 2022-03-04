@@ -4,7 +4,7 @@ import {
   DocumentData,
   DocumentReference,
   QuerySnapshot
-} from '@angular/fire/firestore';
+} from '@angular/fire/compat/firestore';
 import { from, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { LikeRequest } from '../../models/like-request.interface';
